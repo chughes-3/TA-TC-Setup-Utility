@@ -77,10 +77,11 @@ namespace TaxAide_TrueCrypt_Utility
                     }
                 }
             }
+            Log.WritWTime("Trav TC File poss count = " + travTcFilePossCount.ToString() + ", Flash Drives count = " + travUSBDrv.Count.ToString());
     #endregion
 
     #region Decisions to setup initial form
-
+            //Priority to flash keys if they are inserted. button 1 is only one that contains requirements for volume size to be filled out button 2 is strictly for software upgrades except for 2 blank travelers
             if (travTcFilePossCount > 0)
             {
                 radioButton1.Tag = travTcFilePoss.FindLastIndex(delegate(string s) { return (s != string.Empty); });
@@ -106,6 +107,7 @@ namespace TaxAide_TrueCrypt_Utility
                 {
                     radioButton2.Text = "Create Traveler Volume on " + travUSBDrv[travUSBDrv.Count - 2];
                     radioBut2.SetFlag(TasksBitField.Flag.travtcFileFormat);
+                    radioButton2.Tag = travUSBDrv.Count - 2;
                     if (travUSBDrv.Count > 2) { showOtherUsbs.Visible = true; }
                 }
                 else { radioButton2.Visible = false; }
@@ -225,6 +227,7 @@ namespace TaxAide_TrueCrypt_Utility
                         {
                             radioButton2.Text = "Create Traveler Volume on " + travUSBDrv[travUSBDrv.Count - 2];
                             radioBut2.SetFlag(TasksBitField.Flag.travtcFileFormat);
+                            radioButton2.Tag = travUSBDrv.Count - 2;
                             if (travUSBDrv.Count > 2) { showOtherUsbs.Visible = true; }
                         }
                         else { radioButton2.Visible = false; }
@@ -242,23 +245,39 @@ namespace TaxAide_TrueCrypt_Utility
                 tasklist1.taskList |= radioBut1.taskList;   //do initial setup of tasks
                 if (radioBut1.IsOn(TasksBitField.Flag.hdTCFileFormat)) //therefore resize or create a volume
                 {
-                    Log.WriteStrm.WriteLine(string.Format("radiobut1 = 0x{0:X}",radioBut1.taskList));
+                    TrueCryptFilesNew.tcFileHDSizeNew = CheckEditBox(radioButton1, radioBut1);    // check on size error = 0
+                    if (TrueCryptFilesNew.tcFileHDSizeNew == 0)
+                    {   // data entry error clear tasklist previously set
+                        tasklist1.taskList = 0;
+                        return;
+                    }
                     if (!File.Exists(TrueCryptSWObj.tcProgramDirectory + "\\" + taSWExist) | !Directory.Exists(TrueCryptSWObj.tcProgramDirectory))
                     {
                         tasklist1.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);   // to deal with case that only TC installed previously now want to create/resize
                     }
                     Check4HostUpgrade();
                 }
+                if (radioBut1.IsOn(TasksBitField.Flag.travTcfileOldCopy))   // must be done first to set up size for traveler size checking
+                {   
+                    tcFileTravOldLoc.FileNamePath = travTcFilePoss[(int)radioButton1.Tag]; 
+                }
                 if (radioBut1.IsOn(TasksBitField.Flag.travtcFileFormat)) //set by both resize and make new
                 {//we have create a new traveler file NEW filename set in checkTravswexists
+                    TrueCryptFilesNew.tcFileTravSizeNew = CheckEditBox(radioButton1, radioBut1);    // check on size error = 0
+                    if (TrueCryptFilesNew.tcFileTravSizeNew == 0) //checkedit box returns zero if data entry is zero
+                    {   // data entry error clear tasklist previously set
+                        tasklist1.taskList = 0;
+                        return;
+                    }
                     string drv = travUSBDrv[(int)radioButton1.Tag].Substring(0, 2);  //tag stores label name as well as drive
+                    if (TrueCryptSWObj.tCryptRegEntry == null)
+                    {// nothing on host so must setup fqn for traveler
+                        TrueCryptSWObj.tcProgramFQN = drv + "\\" + "\\Tax-Aide_Traveler\\truecrypt.exe";
+                        TrueCryptSWObj.tcProgramDirectory = TrueCryptSWObj.tcProgramFQN.Substring(0, TrueCryptSWObj.tcProgramFQN.Length - 14);
+                    }
                     checkTravSwExists(drv); //checks if sw exists and sets flags for upgrades if necessary
                     //now check if need host upgrade to work with traveler
                     Check4HostUpgrade();
-                }
-                if (radioBut1.IsOn(TasksBitField.Flag.travTcfileOldCopy))
-                {   // we have a traveler file resize check if traveler needs upgrading and check host also
-                    tcFileTravOldLoc.FileNamePath = travTcFilePoss[(int)radioButton1.Tag]; //this works for resize
                 }
             }
             else
@@ -267,7 +286,6 @@ namespace TaxAide_TrueCrypt_Utility
                 {
 
                     tasklist1.taskList |= radioBut2.taskList;   //do initial setup of tasks
-                    Log.WriteStrm.WriteLine(string.Format("radiobut2 = {0:X}", radioBut2.taskList));
                     if (radioBut2.IsOn(TasksBitField.Flag.hdTcSwInstall))
                     {
                         Check4HostUpgrade();
@@ -284,10 +302,15 @@ namespace TaxAide_TrueCrypt_Utility
                                 tasklist1.SetFlag(TasksBitField.Flag.travTcfileOldCopy);
                             }                            
                         }
-
                     }
                     if (radioBut2.IsOn(TasksBitField.Flag.travtcFileFormat)) //set by make new
                     {//we have create a new traveler file
+                        TrueCryptFilesNew.tcFileTravSizeNew = CheckEditBox(radioButton2, radioBut2);    // check on size error = 0
+                        if (TrueCryptFilesNew.tcFileTravSizeNew == 0)
+                        {   // data entry error clear tasklist previously set
+                            tasklist1.taskList = 0;
+                            return;
+                        }
                         string drv = travUSBDrv[(int)radioButton2.Tag].Substring(0, 2);
                         checkTravSwExists(drv); //checks if sw exists and sets flags for upgrades if necessary plus sets new traveler filepath
                         //now check if need host upgrade to work with traveler
@@ -301,7 +324,9 @@ namespace TaxAide_TrueCrypt_Utility
                 }
             }
             //MessageBox.Show(selectedFilePath);
-            Log.WritWTime("Close of FileList Old Paths = " + tcFileTravOldLoc.FileNamePath + " & " + tcFileHDOldLoc.FileNamePath);
+            //Log.WritSection(string.Format("tasklist = {0:X}",tasklist1.taskList));
+            Log.WritWTime("Dialog Close >> Old Paths = " + tcFileTravOldLoc.FileNamePath + " & " + tcFileHDOldLoc.FileNamePath);
+            Log.WritWTime("HD Size = " + TrueCryptFilesNew.tcFileHDSizeNew + "MB, Trav Size = " + TrueCryptFilesNew.tcFileTravSizeNew + "MB");
             Close();
         }
 
@@ -340,22 +365,28 @@ namespace TaxAide_TrueCrypt_Utility
         {
             if (!radioButton1.Checked)
             {
-                groupBox2.Enabled = false;
+
+                if (radioButton2.Checked & !radioBut2.IsOn(TasksBitField.Flag.travtcFileFormat))
+                {//only time need vol size is if radio button 2 is on usb tc file create
+                    groupBox2.Enabled = false;
+                }
+                else
+                {
+                    groupBox2.Enabled = true;
+                }
             }
             else
             {
                 groupBox2.Enabled = true;
-
             }
         }
         void checkTravSwExists(string drv)
         {
             TrueCryptFilesNew.tcFilePathTravNew = drv + "\\" + tcFilename;
-            Log.WriteStrm.WriteLine("End of checktravsw New Path = " + TrueCryptFilesNew.tcFilePathTravNew);
             if (File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe"))
             {   //existence of this directory means at 6.2 or 6.3
                 string str = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe").FileVersion;
-                Log.WriteStrm.WriteLine("Traveler TrueCrypt Program Path = " + drv + "\\Tax-Aide_Traveler\\TrueCrypt.exe" + " Version=" + str);
+                Log.WriteStrm.WriteLine("FileList Traveler TrueCrypt Program Path = " + drv + "\\Tax-Aide_Traveler\\TrueCrypt.exe" + " Version=" + str);
                 //in future test for traveler sw release here and upgrade
             }
             else
@@ -383,12 +414,19 @@ namespace TaxAide_TrueCrypt_Utility
                     tasklist1.SetFlag(TasksBitField.Flag.hdTASwOldDelete);
                     tasklist1.SetFlag(TasksBitField.Flag.hdTcSwUninstall);
                     tasklist1.SetFlag(TasksBitField.Flag.hdTcSwInstall);
-                    Log.WritWTime(tcFileHDOldLoc.FileNamePath + ", " + FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion);
+                    if (tcFileHDOldLoc.FileNamePath != null)
+                    {
+                        Log.WritWTime(tcFileHDOldLoc.FileNamePath + ", " + FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion); 
+                    }
+                    else
+                    {
+                        Log.WritWTime("No Hard Drive TC File");  
+                    }
                     if (tcFileHDOldLoc.FileNamePath != null & string.Compare(FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion, "6.2") < 0)
                     {
                         if (tasklist1.TestTrav())
                         {
-                            if (DialogResult.Cancel == MessageBox.Show("The TrueCrypt Software on the hard drive has to be upgraded\n to be compatible with the Traveler Software on the USB drive.\n An existing TrueCrypt Volume has been detected. After the hard drive upgrade the contents of the old volume will be copied across to a newly created volume, you will be asked next for the new size of the hard drive volume", "Tax-Aide TrueCrypt Utilities", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand))
+                            if (DialogResult.Cancel == MessageBox.Show("The TrueCrypt Software on the hard drive has to be upgraded to be compatible with the Traveler Software on the USB drive. An existing TrueCrypt Volume has been detected. After the hard drive upgrade the contents of the old volume will be copied across to a newly created volume, you will be asked next for the new size of the hard drive volume", TrueCryptSWObj.mbCaption, MessageBoxButtons.OKCancel, MessageBoxIcon.Hand))
                             {
                                 Environment.Exit(1);
                             }
@@ -398,7 +436,7 @@ namespace TaxAide_TrueCrypt_Utility
                         {//not traveler so doing hard drive but need to test if upgrade spec'd
                             if (!tasklist1.IsOn(TasksBitField.Flag.hdTCFileFormat))
                             {// NO file format so we are doing upgrade but have to do data file
-                               if (DialogResult.Cancel == MessageBox.Show("An existing hard drive TrueCrypt Volume has been detected.The TrueCrypt Software on the hard drive that is being upgraded is sufficiently old that this data volume must also be regenerated, you will be asked next for the new size of the hard drive volume", "Tax-Aide TrueCrypt Utilities", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand))
+                                if (DialogResult.Cancel == MessageBox.Show("An existing hard drive TrueCrypt Volume has been detected.The TrueCrypt Software on the hard drive that is being upgraded is sufficiently old that this data volume must also be regenerated, you will be asked next for the new size of the hard drive volume", TrueCryptSWObj.mbCaption, MessageBoxButtons.OKCancel, MessageBoxIcon.Hand))
                                 {
                                     Environment.Exit(1);
                                 }
@@ -409,17 +447,84 @@ namespace TaxAide_TrueCrypt_Utility
                         tasklist1.SetFlag(TasksBitField.Flag.hdTcfileOldRename);
                         tasklist1.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);
                         tasklist1.SetFlag(TasksBitField.Flag.hdTCFileFormat);
+                        //let's get teh new HD size via a dialog with the user
+                        if (TrueCryptFilesNew.tcFileHDSizeNew == 0)
+                        {//Not previously set so we need to set it here we get to this point with a simple HD resize with an old release of TC SW
+                            hdTCSize hdtcFileSize = new hdTCSize((int)tcFileHDOldLoc.size / 1000000);
+                            hdtcFileSize.ShowDialog();
+                            TrueCryptFilesNew.tcFileHDSizeNew = hdtcFileSize.hdFileSizeNew; 
+                        }
                     }
                 }
             }
 
         }
-        private void Form1_Load(object sender, EventArgs e)
+
+        private int CheckEditBox(RadioButton radioButton, TasksBitField radBut)
         {
+            int input;
+            if (!Int32.TryParse(newFileSizeMB.Text, out input))
+            {
+                MessageBox.Show("Non Numeric entry in Volume Size\n\n\t" + newFileSizeMB.Text, TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                newFileSizeMB.Focus();
+                return 0;
+            }
+            if (gBytes.Checked) { input *= 1000; }
+            if (input > 7000)
+            {
+                if (DialogResult.No == MessageBox.Show("Are you sure you meant this Volume size\n" + input.ToString() + "MB will take a really long time to format", TrueCryptSWObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                {
+                    newFileSizeMB.Focus();
+                    return 0;
+                }
+            }
+            if (input < 5)
+            {
+                if (DialogResult.No == MessageBox.Show("Are you sure you meant this Volume size\n\n\t" + input.ToString() + "MB is really small??", TrueCryptSWObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                {
+                    newFileSizeMB.Focus();
+                    return 0;
+                }
+            }
+            if (newFileSizeMB.ForeColor == SystemColors.GrayText)
+            {
+                if (DialogResult.No == MessageBox.Show("There has been no entry in the Volume Size Box. Did you intend to use the default of 950 MBytes?", TrueCryptSWObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                {
+                    newFileSizeMB.Focus();
+                    return 0;
+                }
+            }
+            if (input == 0) { return 0; }
+            if (radBut.IsOn(TasksBitField.Flag.travtcFileFormat))
+            {//we have traveler so must check sizing
+                long oldFSize = 0;
+                if (tcFileTravOldLoc.FileNamePath != null) //ie have old file which is taking up flash room
+                {
+                    oldFSize = tcFileTravOldLoc.size;
+                }
+                DriveInfo drv = new DriveInfo(travUSBDrv[(int)radioButton.Tag].Substring(0, 2));
+                long maxSize = drv.TotalFreeSpace - 10000000 + oldFSize;
+                if (maxSize < input * 1048576)
+                {
+                    MessageBox.Show("Volume Size is larger that possible on this flash drive\n\t" + newFileSizeMB.Text + " MBytes\n\nThe Maximum is " + (maxSize / 1048576).ToString() + " MBytes", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    newFileSizeMB.Text = "";
+                    newFileSizeMB.Focus();
+                    return 0;
+                }
+            }
+            return input;
         }
+
         private void Cancel_Click(object sender, EventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void Edit_Entry(object sender, EventArgs e) //ystem.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, S
+        {
+            newFileSizeMB.Font = new Font(this.Font, FontStyle.Regular);
+            newFileSizeMB.ForeColor = SystemColors.WindowText;
+            newFileSizeMB.Text = "";
         }
     }
 }

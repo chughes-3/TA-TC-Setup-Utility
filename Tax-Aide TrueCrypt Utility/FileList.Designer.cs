@@ -81,7 +81,6 @@
             // OK
             // 
             this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OK.Location = new System.Drawing.Point(260, 224);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
@@ -114,12 +113,15 @@
             // 
             // newFileSizeMB
             // 
+            this.newFileSizeMB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.newFileSizeMB.ForeColor = System.Drawing.SystemColors.GrayText;
             this.newFileSizeMB.Location = new System.Drawing.Point(2, 53);
             this.newFileSizeMB.Name = "newFileSizeMB";
             this.newFileSizeMB.Size = new System.Drawing.Size(54, 20);
             this.newFileSizeMB.TabIndex = 6;
-            this.newFileSizeMB.Text = "950";
+            this.newFileSizeMB.Text = "950 ";
             this.newFileSizeMB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.newFileSizeMB.Enter += new System.EventHandler(this.Edit_Entry);
             // 
             // gBytes
             // 
@@ -195,7 +197,6 @@
             this.Name = "FileList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AARP Tax-Aide TrueCrypt Utilities";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);

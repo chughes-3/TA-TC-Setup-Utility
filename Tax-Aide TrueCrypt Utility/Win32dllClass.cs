@@ -418,6 +418,8 @@ namespace TaxAide_TrueCrypt_Utility
 
         [DllImport("User32.dll")]
         public static extern Int32 FindWindow(String lpClassName, String lpWindowName);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern bool IsWindowVisible(IntPtr hWnd);
         [DllImport("User32.dll")]
         public static extern Int32 SetForegroundWindow(int hWnd);
         [DllImport("User32.dll")]

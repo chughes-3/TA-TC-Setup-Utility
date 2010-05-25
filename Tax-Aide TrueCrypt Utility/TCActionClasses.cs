@@ -33,6 +33,7 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="volume has been created and",actionToBeDone="SpecialKey",captionText="Exit",variableText="\u001B"}, //sends escape key
             new NextWinAction{uniqueWinText="administrator privileges",actionToBeDone="ClickButton",captionText="&No",variableText=String.Empty},
             new NextWinAction{uniqueWinText="NOT ENCRYPT THE FILE, BUT IT WILL DELETE IT",actionToBeDone="Nothing",captionText="",variableText=String.Empty},
+            new NextWinAction{uniqueWinText="Force dismount?",actionToBeDone="ClickButton",captionText="Yes",variableText=String.Empty},
             new NextWinAction{uniqueWinText="Large Files",actionToBeDone="ClickButton",captionText="Next",variableText=String.Empty}
         };
             //End of TC Volume Format entries
@@ -237,7 +238,7 @@ namespace TaxAide_TrueCrypt_Utility
                         NextButton(winaction[r].variableText.Substring(variableTextCommaIndex + 1),string.Empty);//Assumes this is always the next button when combo box involved otherwise have to do something complex with data like sharing the variable string. Could do a return keydown message to wondow
                         break;
                     case "RestartExit": //TC installation
-                        MessageBox.Show("TrueCrypt requires a System Restart\rPlease do that and then restart this program", "TrueCrypt Utilities",MessageBoxButtons.OK,MessageBoxIcon.Hand);
+                        MessageBox.Show("TrueCrypt requires a System Restart\rPlease do that and then restart this program", TrueCryptSWObj.mbCaption,MessageBoxButtons.OK,MessageBoxIcon.Hand);
                         Log.WritWTime("System restart required due to TrueCrypt installation or Problem");
                         Application.Exit();
                         break;
@@ -245,7 +246,7 @@ namespace TaxAide_TrueCrypt_Utility
                         if (File.Exists(TrueCryptSWObj.tcProgramFQN))
                         {   // uninstall failed
                             Log.WritWTime("Automated TrueCrypt Uninstall failed");
-                            MessageBox.Show("Automated TrueCrypt Uninstall failed.\nPlease uninstall TrueCrypt manually then restart this program", "TrueCrypt Utilities", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                            MessageBox.Show("Automated TrueCrypt Uninstall failed.\nPlease uninstall TrueCrypt manually then restart this program", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                             Application.Exit();
                         }
                         else
@@ -280,7 +281,7 @@ namespace TaxAide_TrueCrypt_Utility
                        return 1;
                     }
                 }
-
+                Thread.Sleep(200); //to let window show before continue
                 #endregion
             }
             else //r=0 ie this wondow not in the list
@@ -290,8 +291,8 @@ namespace TaxAide_TrueCrypt_Utility
                 {
                     Log.WriteStrm.WriteLine(item.cntrlClass + ", " + item.caption);
                 }
-                MessageBox.Show(string.Format("The " + mainWinTitle + " Process has displayed an unexpected window.\n Exiting, a log file is located at {0}", Log.logPathFile), "TrueCrypt Utilities", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return 0;//new window
+                MessageBox.Show(string.Format("The " + mainWinTitle + " Process has displayed an unexpected window.\n Exiting, a log file is located at {0}", Log.logPathFile), TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Environment.Exit(1);//new window
             }
             //Come out of action and wait loops here so test for exit conditions
             if (Win32.FindWindow("CustomDlg", mainWinTitle) == 0)   // normal exit when TrueCrypt process has disappeared
@@ -315,8 +316,8 @@ namespace TaxAide_TrueCrypt_Utility
                     return 0;
                 }
                 Log.WriteStrm.WriteLine(DateTime.Now.ToString() + mainWinTitle + " Process has disappeared");
-                MessageBox.Show(string.Format("The " + mainWinTitle + " Process has unexpectedly disappeared.\n A log file is located at {0}", Log.logPathFile), "TrueCrypt Utilities", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return 0;
+                MessageBox.Show(string.Format("The " + mainWinTitle + " Process has unexpectedly disappeared.\n A log file is located at {0}", Log.logPathFile), TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Environment.Exit(1);
             }
             return 1;
         }

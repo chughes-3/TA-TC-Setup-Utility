@@ -25,8 +25,10 @@ namespace TaxAide_TrueCrypt_Utility
             //Application.Run(new FileList());
             FileList InfoFromUser = new FileList(tasklist,tcFileHDOld,tcFileTravOld);
             InfoFromUser.ShowDialog();
+            Log.WritSection(string.Format("TaskList = 0x{0:X}", tasklist.taskList));
             tasklist.LogTasks();
             //Next  TC software object does tasklist
+            //Environment.Exit(1);
             TcSoftware.TCSWObjDoTasks(tasklist,tcFileHDOld,tcFileTravOld);
         }
     }
