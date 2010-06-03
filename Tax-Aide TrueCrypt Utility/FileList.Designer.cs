@@ -40,6 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.showOtherUsbs = new System.Windows.Forms.Button();
+            this.sizeLabel = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,7 +82,7 @@
             // OK
             // 
             this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OK.Location = new System.Drawing.Point(260, 224);
+            this.OK.Location = new System.Drawing.Point(260, 236);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
             this.OK.TabIndex = 5;
@@ -93,7 +94,7 @@
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(53, 224);
+            this.Cancel.Location = new System.Drawing.Point(53, 236);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 4;
@@ -115,7 +116,7 @@
             // 
             this.newFileSizeMB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.newFileSizeMB.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.newFileSizeMB.Location = new System.Drawing.Point(2, 53);
+            this.newFileSizeMB.Location = new System.Drawing.Point(88, 73);
             this.newFileSizeMB.Name = "newFileSizeMB";
             this.newFileSizeMB.Size = new System.Drawing.Size(54, 20);
             this.newFileSizeMB.TabIndex = 6;
@@ -126,7 +127,7 @@
             // gBytes
             // 
             this.gBytes.AutoSize = true;
-            this.gBytes.Location = new System.Drawing.Point(135, 54);
+            this.gBytes.Location = new System.Drawing.Point(221, 74);
             this.gBytes.Name = "gBytes";
             this.gBytes.Size = new System.Drawing.Size(59, 17);
             this.gBytes.TabIndex = 8;
@@ -137,7 +138,7 @@
             // 
             this.mBytes.AutoSize = true;
             this.mBytes.Checked = true;
-            this.mBytes.Location = new System.Drawing.Point(68, 54);
+            this.mBytes.Location = new System.Drawing.Point(154, 74);
             this.mBytes.Name = "mBytes";
             this.mBytes.Size = new System.Drawing.Size(60, 17);
             this.mBytes.TabIndex = 7;
@@ -149,7 +150,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(31, 21);
+            this.label2.Location = new System.Drawing.Point(113, 14);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(145, 16);
             this.label2.TabIndex = 9;
@@ -158,19 +159,20 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.sizeLabel);
             this.groupBox2.Controls.Add(this.gBytes);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.mBytes);
             this.groupBox2.Controls.Add(this.newFileSizeMB);
-            this.groupBox2.Location = new System.Drawing.Point(72, 138);
+            this.groupBox2.Location = new System.Drawing.Point(12, 128);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 82);
+            this.groupBox2.Size = new System.Drawing.Size(382, 104);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             // 
             // showOtherUsbs
             // 
-            this.showOtherUsbs.Location = new System.Drawing.Point(252, 38);
+            this.showOtherUsbs.Location = new System.Drawing.Point(252, 36);
             this.showOtherUsbs.Name = "showOtherUsbs";
             this.showOtherUsbs.Size = new System.Drawing.Size(105, 23);
             this.showOtherUsbs.TabIndex = 11;
@@ -179,13 +181,23 @@
             this.showOtherUsbs.Visible = false;
             this.showOtherUsbs.Click += new System.EventHandler(this.showOtherUsbs_Click);
             // 
+            // sizeLabel
+            // 
+            this.sizeLabel.AutoSize = true;
+            this.sizeLabel.Location = new System.Drawing.Point(7, 45);
+            this.sizeLabel.Name = "sizeLabel";
+            this.sizeLabel.Size = new System.Drawing.Size(359, 13);
+            this.sizeLabel.TabIndex = 10;
+            this.sizeLabel.Text = "C: has xxxMB of Available Space with an existing yyyMB TrueCrypt Volume";
+            this.sizeLabel.Visible = false;
+            // 
             // FileList
             // 
             this.AcceptButton = this.OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(406, 262);
+            this.ClientSize = new System.Drawing.Size(406, 274);
             this.Controls.Add(this.showOtherUsbs);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label1);
@@ -218,6 +230,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button showOtherUsbs;
+        private System.Windows.Forms.Label sizeLabel;
     }
 }
 

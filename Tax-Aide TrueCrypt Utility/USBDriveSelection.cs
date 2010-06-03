@@ -37,6 +37,7 @@ namespace TaxAide_TrueCrypt_Utility
                 }
                 RadButtList[i].Visible = true;
             }
+            RadButtList[count - 1].Checked = true;  //to get off first button enabled since that will have already been selested
         }
 
         private void USBDriveSelection_Load(object sender, EventArgs e)

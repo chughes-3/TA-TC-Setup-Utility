@@ -17,8 +17,10 @@ namespace TaxAide_TrueCrypt_Utility
     }
     class TCWin //this class is all about the TrueCrypt winodws that are open when TC is running install uninstall or formatting
     {
+
+        #region Lists of window text and actions
         static List<NextWinAction> winaction;  //variable to hold which list of actions we are using
-         static List<NextWinAction> winActionFormat = new List<NextWinAction>()
+        static List<NextWinAction> winActionFormat = new List<NextWinAction>()
         {
             //First block are TV Volume Format items
             new NextWinAction{uniqueWinText="Volume Location",actionToBeDone= "EnterText",captionText="Next",variableText=String.Empty},
@@ -36,9 +38,9 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="Force dismount?",actionToBeDone="ClickButton",captionText="Yes",variableText=String.Empty},
             new NextWinAction{uniqueWinText="Large Files",actionToBeDone="ClickButton",captionText="Next",variableText=String.Empty}
         };
-            //End of TC Volume Format entries
-            //Next Block is TC installer items
-         static List<NextWinAction> winActionInstall = new List<NextWinAction>()
+        //End of TC Volume Format entries
+        //Next Block is TC installer items
+        static List<NextWinAction> winActionInstall = new List<NextWinAction>()
          {
             new NextWinAction{uniqueWinText="accept these license terms",actionToBeDone="ClickButton",captionText="I a&ccept and agree to be bound by the license terms", variableText="a"},      //2 entries required in window c to 1st button then followed by a which moves this window c is implied a is the extra entry 
             new NextWinAction{uniqueWinText="Wizard Mode",actionToBeDone="ClickButton",captionText="Next",variableText=String.Empty},
@@ -51,9 +53,9 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="computer must be restarted",actionToBeDone="RestartExit",captionText="",variableText=String.Empty},
             new NextWinAction{uniqueWinText="system cannot find the file specified",actionToBeDone="RestartExit",captionText="",variableText=String.Empty}         
          };
-            //End of TC setup install block
-            //Next Block is TC uninstall
-         static List<NextWinAction> winActionUninstall = new List<NextWinAction>()
+        //End of TC setup install block
+        //Next Block is TC uninstall
+        static List<NextWinAction> winActionUninstall = new List<NextWinAction>()
          {
             new NextWinAction{uniqueWinText="Click Uninstall to remove TrueCrypt from this system.++&Uninstall",actionToBeDone="ClickButton",captionText="Create System &Restore point", variableText="\r"},     //2 entries required in window click to 1st button then followed by variable text entry either letter for clickbutton or \r to move this window 
             new NextWinAction{uniqueWinText="Click Uninstall to remove TrueCrypt from this system.++&Finish",actionToBeDone="ClickButton",captionText="&Finish", variableText=String.Empty},     //
@@ -63,8 +65,8 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="Exit?",actionToBeDone="ClickButton",captionText="&Yes",variableText=String.Empty},
             new NextWinAction{uniqueWinText="Uninstall TrueCrypt from:",actionToBeDone="SpecialKey",captionText="&Uninstall", variableText="\r"}     //For TC 4.2 version only - unique uninstall window
         };
-         //Next Block is TC installer extract files items
-         static List<NextWinAction> winActionExtract = new List<NextWinAction>()
+        //Next Block is TC installer extract files items
+        static List<NextWinAction> winActionExtract = new List<NextWinAction>()
          {
             new NextWinAction{uniqueWinText="accept these license terms",actionToBeDone="ClickButton",captionText="I a&ccept and agree to be bound by the license terms", variableText="a"},      //2 entries required in window c to 1st button then followed by a which moves this window c is implied a is the extra entry 
             new NextWinAction{uniqueWinText="Wizard Mode",actionToBeDone="ClickButton",captionText="Extract",variableText="\r"},
@@ -75,7 +77,8 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="All files have been successfully extracted",actionToBeDone="SpecialKey",captionText="OK",variableText="\r"},         
             new NextWinAction{uniqueWinText="system cannot find the file specified",actionToBeDone="RestartExit",captionText="",variableText=String.Empty}         
          };
-         //End of TC setup installer extract block
+        //End of TC setup installer extract block 
+        #endregion
 
          public static List<string> dlgBoxTitles = new List<string>()
          {
@@ -144,7 +147,7 @@ namespace TaxAide_TrueCrypt_Utility
             winText.Append(wintxt.ToString() + "+");//Build string of all text in dialog box to search
             return true;
         }
-        #endregion 
+   #endregion 
 
         public static void SetupDoActionList(string procedure, string path, string size)   //procedure we are doing to setup up winaction, path for locations and vol size for formating
         {

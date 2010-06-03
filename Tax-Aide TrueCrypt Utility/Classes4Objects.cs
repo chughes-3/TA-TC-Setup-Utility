@@ -34,24 +34,25 @@ namespace TaxAide_TrueCrypt_Utility
         public TrueCryptSWObj() // initialize all static entries
         {
             //do initial analysis of state of system
-            Log.WriteStrm.Write("OS Version = " + System.Environment.OSVersion.ToString() + " or ");
+            string str = string.Empty;
             if (System.Environment.OSVersion.ToString().Contains("6.1"))
             {
-                Log.WriteStrm.WriteLine("Windows 7");
+                str = "Windows 7";
             }
             else if (System.Environment.OSVersion.ToString().Contains("6.0"))
             {
-                Log.WriteStrm.WriteLine("Vista");
+                str = "Vista";
             }
             else if (System.Environment.OSVersion.ToString().Contains("5.1"))
             {
-                Log.WriteStrm.WriteLine("Win XP");
+                str = "Win XP";
             }
             else
             {
                 MessageBox.Show("Unknown OS, Exiting", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
+            Log.WritSection("OS Version = " + System.Environment.OSVersion.ToString() + " or " + str);
             osVer = Environment.OSVersion.Version.Major;
             tCryptRegEntry = (string)Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Classes\TrueCryptVolume\Shell\open\command", "", "");
             Log.WriteStrm.WriteLine("TrueCrypt Registry Entry = " + tCryptRegEntry);
@@ -59,7 +60,19 @@ namespace TaxAide_TrueCrypt_Utility
             {
                 tcProgramFQN = tCryptRegEntry.Substring(1, tCryptRegEntry.Length - 10); //registry entry has a leading quote that needs to go
                 tcProgramDirectory = tcProgramFQN.Substring(0, tcProgramFQN.Length - 14);
-                tcDriveClose("");   //Forces closing of all drives
+                if (Directory.Exists("P:\\"))
+                {
+                    tcDriveClose("P");   //Forces closing 
+                }
+                if (Directory.Exists("S:\\"))
+                {
+                    tcDriveClose("S");   //Forces closing 
+                }
+            }
+            if (Directory.Exists("P:\\"))
+            {
+            MessageBox.Show("The P Drive exists. Please close it and restart this program", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Environment.Exit(1);
             }
         }
                         
@@ -163,19 +176,24 @@ namespace TaxAide_TrueCrypt_Utility
                 StartUpDriveTC(tcProgramDirectory + "\\TrueCrypt Format.exe","", "format", "Truecrypt volume creation wizard", TrueCryptFilesNew.tcFilePathHDNew, TrueCryptFilesNew.tcFileHDSizeNew.ToString());
                 if (tasklist.TestTrav() == false)
                 {
-                    progOverall.Close(); 
+                    progOverall.Close(); //close the progress window
                 }
                 //test for file move due to old file 
                 string str1 = (string)Microsoft.Win32.Registry.GetValue(regKeyName, "TFTAOld", "");
                 if (str1 != "")
                 {//We have old files to move
                     Log.WritSection("Have to Migrate old HD TrueCrypt volume(s) files across to new TrueCrypt Volume");
+                    MessageBox.Show("We now have to copy the contents of the old TrueCrypt Volume to the New TrueCrypt Volume. You will be asked first for the password to the new Truecrypt Volume and then the password for the old TrueCrypt Volume. Then the contents of the old volume will be copied to the new Volume. If there are 2 old volumes the program will then go on to ask you for the password to the second old volume so that copying can be done", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     string[] oldFilePaths = str1.Split(new char[] { ',' });
                     //Prepare the user
                     tcDriveOpen(TrueCryptFilesNew.tcFilePathHDNew, "NEW P", "", tcDriveLetter);
                     foreach (var item in oldFilePaths)
                     {
-                        tcDriveOpen(item, "OLD P or S", "", "S");
+                        if (item.Contains("oldtsdata"))
+                        {
+                            tcDriveOpen(item, "OLD S", "", "S");
+                        }
+                        else { tcDriveOpen(item, "OLD P", "", "S"); }
                         try
                         {
                             Log.WritWTime("About to Copy old " + item);
@@ -287,9 +305,11 @@ namespace TaxAide_TrueCrypt_Utility
                 if (oldTravFile != "")
                 {//We have old files to move
                     Log.WritSection("Have to Migrate old Traveler files across to new TrueCrypt Volume");
+                    MessageBox.Show("We now have to copy the contents of the old TrueCrypt traveler Volume to the New TrueCrypt traveler Volume. You will be asked first for the password to the new Truecrypt Volume and then the password for the old TrueCrypt Volume. Then the contents of the old volume will be copied to the new Volume",mbCaption,MessageBoxButtons.OK,MessageBoxIcon.Information);
+
                     //Prepare the user
-                    tcDriveOpen(TrueCryptFilesNew.tcFilePathTravNew, "NEW P", "Old Traveler", tcDriveLetter);
-                    tcDriveOpen(oldTravFile, "OLD P or S", "", "S");
+                    tcDriveOpen(TrueCryptFilesNew.tcFilePathTravNew, "NEW P", "Traveler", tcDriveLetter);
+                    tcDriveOpen(oldTravFile, "OLD", "Traveler", "S");
                     try
                     {
                         Log.WritWTime("About to Copy old " + oldTravFile);
@@ -498,7 +518,7 @@ namespace TaxAide_TrueCrypt_Utility
             proc2.WaitForExit();
             if (proc2.ExitCode != 0)
             {
-                MessageBox.Show("TrueCrypt volume opening failed in some way. Reboot may be needed, when you start teh P drive the copying will be attempted again.\n\tExiting", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("TrueCrypt volume opening failed in some way. Reboot may be needed, when you start the P drive the copying will be attempted again.\n\tExiting", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
         }
