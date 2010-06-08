@@ -39,15 +39,15 @@
             this.mBytes = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.showOtherUsbs = new System.Windows.Forms.Button();
             this.sizeLabel = new System.Windows.Forms.Label();
+            this.showOtherUsbs = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(29, 59);
+            this.radioButton1.Location = new System.Drawing.Point(22, 59);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(85, 17);
             this.radioButton1.TabIndex = 1;
@@ -59,7 +59,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(29, 82);
+            this.radioButton2.Location = new System.Drawing.Point(22, 82);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(85, 17);
             this.radioButton2.TabIndex = 2;
@@ -70,7 +70,7 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(29, 105);
+            this.radioButton3.Location = new System.Drawing.Point(22, 105);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(85, 17);
             this.radioButton3.TabIndex = 3;
@@ -170,6 +170,16 @@
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             // 
+            // sizeLabel
+            // 
+            this.sizeLabel.AutoSize = true;
+            this.sizeLabel.Location = new System.Drawing.Point(7, 45);
+            this.sizeLabel.Name = "sizeLabel";
+            this.sizeLabel.Size = new System.Drawing.Size(359, 13);
+            this.sizeLabel.TabIndex = 10;
+            this.sizeLabel.Text = "C: has xxxMB of Available Space with an existing yyyMB TrueCrypt Volume";
+            this.sizeLabel.Visible = false;
+            // 
             // showOtherUsbs
             // 
             this.showOtherUsbs.Location = new System.Drawing.Point(252, 36);
@@ -180,16 +190,6 @@
             this.showOtherUsbs.UseVisualStyleBackColor = true;
             this.showOtherUsbs.Visible = false;
             this.showOtherUsbs.Click += new System.EventHandler(this.showOtherUsbs_Click);
-            // 
-            // sizeLabel
-            // 
-            this.sizeLabel.AutoSize = true;
-            this.sizeLabel.Location = new System.Drawing.Point(7, 45);
-            this.sizeLabel.Name = "sizeLabel";
-            this.sizeLabel.Size = new System.Drawing.Size(359, 13);
-            this.sizeLabel.TabIndex = 10;
-            this.sizeLabel.Text = "C: has xxxMB of Available Space with an existing yyyMB TrueCrypt Volume";
-            this.sizeLabel.Visible = false;
             // 
             // FileList
             // 

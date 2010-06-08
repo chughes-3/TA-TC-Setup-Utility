@@ -13,10 +13,10 @@ namespace TaxAide_TrueCrypt_Utility
     {
         public int selectedDrv;
         List<RadioButton> RadButtList = new List<RadioButton>();
-        public USBDriveSelection(List<string> travUSBDrv, List<string> travTcFilePoss)
+        public USBDriveSelection()
         {
             InitializeComponent();
-            foreach (Control child in this.Controls)
+            foreach (Control child in this.Controls)     // get a list of radio buttons so can manipulate them
             {
                 RadioButton radio = child as RadioButton;
                 if (radio != null)
@@ -26,14 +26,14 @@ namespace TaxAide_TrueCrypt_Utility
             }
             RadButtList.Reverse();
             int count = 0;
-            if (travUSBDrv.Count < 7) { count = travUSBDrv.Count; }
+            if (FileList.travUSBDrv.Count < 7) { count = FileList.travUSBDrv.Count; }
             else { count = 6; }
             for (int i = 0; i < count; i++)
             {
-                RadButtList[i].Text = travUSBDrv[i];
-                if (travTcFilePoss[i] != string.Empty)
+                RadButtList[i].Text = FileList.travUSBDrv[i].combo;
+                if (FileList.travUSBDrv[i].tcFilePoss != string.Empty)
                 {
-                    RadButtList[i].Text += " with " + travTcFilePoss[i];
+                    RadButtList[i].Text += " with " + FileList.travUSBDrv[i].tcFilePoss;
                 }
                 RadButtList[i].Visible = true;
             }

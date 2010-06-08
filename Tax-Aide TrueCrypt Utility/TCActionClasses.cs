@@ -80,7 +80,7 @@ namespace TaxAide_TrueCrypt_Utility
         //End of TC setup installer extract block 
         #endregion
 
-         public static List<string> dlgBoxTitles = new List<string>()
+         public static List<string> dlgBoxTitles = new List<string>()    // when have new TrueCrypt version must check dialog box titles
          {
              "TrueCrypt Setup",
              "Truecrypt Volume Creation Wizard",
