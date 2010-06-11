@@ -429,7 +429,7 @@ namespace TaxAide_TrueCrypt_Utility
                 Log.WriteStrm.Write("FileList Traveler TrueCrypt to be upgraded/installed ");
                 if (File.Exists(drv + "\\TrueCrypt.exe"))
                 {
-                    Log.WriteStrm.WriteLine("from version " + FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "TrueCrypt.exe").FileVersion);
+                    Log.WriteStrm.WriteLine("from version " + FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\TrueCrypt.exe").FileVersion);
                 }
                 else
                 {

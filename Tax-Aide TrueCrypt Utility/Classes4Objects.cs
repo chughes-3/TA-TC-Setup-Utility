@@ -85,7 +85,6 @@ namespace TaxAide_TrueCrypt_Utility
             progOverall.statusText.Text = "Starting Tasklist";
             progOverall.Show();
 
-     #region Do tasks in task list
 
      #region HD Rename old TC File(s)
             if (tasklist.IsOn(TasksBitField.Flag.hdTcfileOldRename))
@@ -131,7 +130,8 @@ namespace TaxAide_TrueCrypt_Utility
                     Application.Exit();
                 }
                 Log.WritSection("Uninstalling Hard Drive TrueCrypt Version " + FileVersionInfo.GetVersionInfo(tcProgramFQN).FileVersion);
-                StartUpDriveTC(tcProgramFQN.Substring(0, tcProgramFQN.Length - 4) + " setup.exe", " /u", "uninstall", "TrueCrypt Setup", "", "");
+                TCWin.actionsList = new TcActionUninstall();   //sets up correct list of windows for tc uninstall
+                StartUpDriveTC(tcProgramFQN.Substring(0, tcProgramFQN.Length - 4) + " setup.exe", " /u", "uninstall", "TrueCrypt Setup");
                 Thread.Sleep(2000); //Let uninstall settle
                 // MessageBox.Show("the pause that refreshes"); ; 
             } 
@@ -146,7 +146,8 @@ namespace TaxAide_TrueCrypt_Utility
                 Log.WritSection("Installing  on Hard Drive " + tcSetupProgramName.Substring(0, tcSetupProgramName.Length - 4));
                 progOverall.statusText.Text = "TrueCrypt Hard Drive Install";
                 progOverall.Update();
-                StartUpDriveTC(Environment.GetEnvironmentVariable("temp") + "\\" + tcSetupProgramName, "", "install", tcSetupProgramName.Substring(0, tcSetupProgramName.Length - 4), "", "");
+                TCWin.actionsList = new TcActionInstall();
+                StartUpDriveTC(Environment.GetEnvironmentVariable("temp") + "\\" + tcSetupProgramName, "", "install", tcSetupProgramName.Substring(0, tcSetupProgramName.Length - 4));
                 //setup static field entries in case this is first time install
                 tCryptRegEntry = (string)Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Classes\TrueCryptVolume\Shell\open\command", "", "");
                 Log.WriteStrm.WriteLine("TrueCrypt Registry Entry = " + tCryptRegEntry);
@@ -177,7 +178,10 @@ namespace TaxAide_TrueCrypt_Utility
                 progOverall.Update();
                 Thread.Sleep(300);
                 Log.WritSection("Start HD TrueCrypt Volume creation/Formatting");
-                StartUpDriveTC(tcProgramDirectory + "\\TrueCrypt Format.exe","", "format", "Truecrypt volume creation wizard", TrueCryptFilesNew.tcFilePathHDNew, TrueCryptFilesNew.tcFileHDSizeNew.ToString());
+                TcActionFormat fo = new TcActionFormat();
+                TCWin.actionsList = fo;
+                fo.SetEditBoxes(TrueCryptFilesNew.tcFilePathHDNew, TrueCryptFilesNew.tcFileHDSizeNew.ToString());
+                StartUpDriveTC(tcProgramDirectory + "\\TrueCrypt Format.exe","", "format", "Truecrypt volume creation wizard");
                 if (tasklist.TestTrav() == false)
                 {
                     progOverall.Close(); //close the progress window
@@ -224,7 +228,7 @@ namespace TaxAide_TrueCrypt_Utility
      #region Trav TC file move to HD
             if (tasklist.IsOn(TasksBitField.Flag.travTcfileOldCopy))
             {
-                Log.WritWTime("Copying Old TC File to hard drive");
+                Log.WritSection("Copying Old traveler TC File to hard drive");
                 progOverall.statusText.Text = "Copy old Traveler TrueCrypt volume to the hard drive";
                 progOverall.Update();
                 Thread.Sleep(200);
@@ -247,7 +251,7 @@ namespace TaxAide_TrueCrypt_Utility
      #region Trav SW old delete
             if (tasklist.IsOn(TasksBitField.Flag.travTASwOldDelete))
             {
-                Log.WriteStrm.WriteLine("Traveler TrueCrypt being upgraded="+tcFileTravOld.FileNamePath.Substring(0, 3));
+                Log.WritWTime("Traveler TrueCrypt being upgraded=" + tcFileTravOld.FileNamePath.Substring(0, 3) + " Now deleting old traveler files");
                 
                 RemoveTravelerTCFiles(tcFileTravOld.FileNamePath.Substring(0, 3));
             } 
@@ -310,7 +314,10 @@ namespace TaxAide_TrueCrypt_Utility
                     tcProgramDirectory = tcProgramFQN.Substring(0, tcProgramFQN.Length - 14);
                     CopyFileFromThisAssembly(tcSetupProgramName, Environment.GetEnvironmentVariable("temp"));
                     Log.WritSection("Traveler TrueCrypt being upgraded to latest TrueCrypt release by extracting from TC setup");
-                    StartUpDriveTC(Environment.GetEnvironmentVariable("temp") + "\\" + tcSetupProgramName, "", "extract", tcSetupProgramName.Substring(0, tcSetupProgramName.Length - 4), TrueCryptFilesNew.tcFilePathTravNew.Substring(0, 3) + "Tax-Aide_Traveler", "");
+                    TcActionExtract ex = new TcActionExtract();
+                    TCWin.actionsList = ex;
+                    ex.SetPath(TrueCryptFilesNew.tcFilePathTravNew.Substring(0, 3) + "Tax-Aide_Traveler");
+                    StartUpDriveTC(Environment.GetEnvironmentVariable("temp") + "\\" + tcSetupProgramName, "", "extract", tcSetupProgramName.Substring(0, tcSetupProgramName.Length - 4));
                 }
                 //TrueCrypt files setup copy Taxaide files here
                 progOverall.statusSecond.Text = "Extracting Tax-Aide Scripts to Traveler";
@@ -328,7 +335,10 @@ namespace TaxAide_TrueCrypt_Utility
                 progOverall.Update();
                 Thread.Sleep(200);
                 Log.WritSection("Traveler TrueCrypt Volume formatting starting");
-                StartUpDriveTC(tcProgramDirectory + "\\TrueCrypt Format.exe", "", "format", "Truecrypt volume creation wizard", TrueCryptFilesNew.tcFilePathTravNew, TrueCryptFilesNew.tcFileTravSizeNew.ToString());
+                TcActionFormat trfo = new TcActionFormat();
+                TCWin.actionsList = trfo;
+                trfo.SetEditBoxes(TrueCryptFilesNew.tcFilePathTravNew, TrueCryptFilesNew.tcFileTravSizeNew.ToString());
+                StartUpDriveTC(tcProgramDirectory + "\\TrueCrypt Format.exe", "", "format", "Truecrypt volume creation wizard");
                 //copy old files
                     progOverall.Close(); 
                 //test for file move due to old file 
@@ -360,7 +370,6 @@ namespace TaxAide_TrueCrypt_Utility
             } 
      #endregion
               
-       #endregion
             if (File.Exists(Environment.GetEnvironmentVariable("temp") + "\\" + tcSetupProgramName))
             {//a little housekeeping neatness
                 File.Delete(Environment.GetEnvironmentVariable("temp") + "\\" + tcSetupProgramName);
@@ -369,7 +378,7 @@ namespace TaxAide_TrueCrypt_Utility
             MessageBox.Show("Tasks Successfully Completed", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         // Function to  setup and run TC install, uninstall on hard drive
-        private void StartUpDriveTC(string prgPath,string prgOptions, string uninTxt, string mainWinTitle, string editBox1, string editBox2)
+        private void StartUpDriveTC(string prgPath,string prgOptions, string uninTxt, string mainWinTitle)
         {   //edit box1 for Volume location path and editbox 2 for size strings, prgpath is for truecrypt either HD or traveler, unintxt is action (install, uninstall, extract, format, Main winodw title differs for differing actions 
             Log.WriteStrm.WriteLine("StartUpDriveTC path=" + prgPath + " opt=" + prgOptions);
             Process proc2 = new Process();
@@ -378,7 +387,6 @@ namespace TaxAide_TrueCrypt_Utility
             try
             {
                 proc2.Start();
-                
             }
             catch (Exception e)
             {
@@ -404,7 +412,6 @@ namespace TaxAide_TrueCrypt_Utility
                 Thread.Sleep(100); //again waiting for format to become visible belt and suspenders
                 Log.WriteStrm.WriteLine(uninTxt + "start up window still set to non visible - we have entered this section of code");
             }
-            TCWin.SetupDoActionList(uninTxt, editBox1, editBox2);   //sets up the table of actions used by winaction to runthrough windows
             int i = 0;
             while (Win32.FindWindow("CustomDlg", TCWin.mainWinTitle) != 0)
             {
@@ -425,7 +432,7 @@ namespace TaxAide_TrueCrypt_Utility
                     } 
                 }
                 TCWin tcWin = new TCWin(hWnd); //create object for data associatied with window
-                i = tcWin.DoAction();   //do the action specified in the List for this window and wait for the window to change
+                i = tcWin.DoActionWait();   //do the action specified in the List for this window and wait for the window to change
                 if (i != 1)
                 {
                     break;
@@ -462,7 +469,7 @@ namespace TaxAide_TrueCrypt_Utility
             {
                 File.Delete(item);
             }
-            Log.WritWTime("Count of TaxAide script files removed = " + files.Count.ToString());
+            Log.WritWTime("Count of TaxAide script files removed from Hard Drive = " + files.Count.ToString());
         }
         private void RemoveTravelerTCFiles(string drive)
         {
@@ -504,7 +511,7 @@ namespace TaxAide_TrueCrypt_Utility
             CopyFileFromThisAssembly("Stop_Tax-Aide_Drive.exe", destDir);
             if (FileList.travUSBDrv.Exists(delegate(DrvInfo s) { return s.drvName.Equals(destDir.Substring(0, 2).ToUpper()); }))  //tests whether this is a usb connected drive
             {
-                Log.WritWTime("Copying unique traveler files");
+                Log.WritWTime("Copying unique traveler files from Assembly to Drive");
                 CopyFileFromThisAssembly("Tax-AideDelete.bat", destDir);
                 CopyFileFromThisAssembly("autorun.inf", destDir.Substring(0, 3));
                 CopyFileFromThisAssembly("Start Traveler.bat", destDir.Substring(0, 3));

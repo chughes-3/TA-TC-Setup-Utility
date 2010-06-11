@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="ShellLink.cs" />
     <Compile Include="Tasks.cs" />
+    <Compile Include="TcAction.cs" />
     <Compile Include="TCActionClasses.cs" />
     <Compile Include="USBDriveSelection.cs">
       <SubType>Form</SubType>
