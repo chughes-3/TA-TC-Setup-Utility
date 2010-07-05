@@ -84,11 +84,13 @@ namespace TaxAide_TrueCrypt_Utility
             progOverall = new ProgessOverall(); //get teh progress form initialized
             progOverall.statusText.Text = "Starting Tasklist";
             progOverall.Show();
+            Log.WritSection("Starting TaskList");
 
 
      #region HD Rename old TC File(s)
             if (tasklist.IsOn(TasksBitField.Flag.hdTcfileOldRename))
-            {   
+            {
+                Log.WritWTime("HD Renaming = " + tcFileHDOld.FileNamePath);
                 tcFileHDOld.ReName("oldtpdata.tc");
                 string fileNames = "";
                 //check for existence of s file
@@ -96,6 +98,7 @@ namespace TaxAide_TrueCrypt_Utility
                 {//create a new tcfile obkject
                     TrueCryptFile tcFileHDoldS = new TrueCryptFile();
                     tcFileHDoldS.FileNamePath = tcFileHDOld.FileNamePath.Substring(0,tcFileHDOld.FileNamePath.LastIndexOf('\\')) + "\\tsdata.tc";
+                    Log.WritWTime("HD Renaming = " + tcFileHDoldS.FileNamePath);
                     tcFileHDoldS.ReName("oldtsdata.tc");
                     fileNames = tcFileHDoldS.FileNamePath +",";    // we know we will be adding p
                 }
@@ -107,6 +110,7 @@ namespace TaxAide_TrueCrypt_Utility
      #region HD TA SW old Delete
             if (tasklist.IsOn(TasksBitField.Flag.hdTASwOldDelete))
             {
+                Log.WritWTime("Removing HD Old TA Files");
                 RemoveOldTaxAideFiles();
             }
      #endregion
@@ -251,7 +255,8 @@ namespace TaxAide_TrueCrypt_Utility
      #region Trav SW old delete
             if (tasklist.IsOn(TasksBitField.Flag.travTASwOldDelete))
             {
-                Log.WritWTime("Traveler TrueCrypt being upgraded=" + tcFileTravOld.FileNamePath.Substring(0, 3) + " Now deleting old traveler files");
+                Log.WritWTime("Traveler TrueCrypt being upgraded=" + tcFileTravOld.FileNamePath.Substring(0, 3) );
+                Log.WritWTime(" Now deleting old traveler files");
                 
                 RemoveTravelerTCFiles(tcFileTravOld.FileNamePath.Substring(0, 3));
             } 
@@ -467,7 +472,16 @@ namespace TaxAide_TrueCrypt_Utility
             if (File.Exists(tcProgramDirectory + "\\ExtTC.exe")){files.Add(tcProgramDirectory + "\\ExtTC.exe");}                
             foreach (var item in files)
             {
-                File.Delete(item);
+                try
+                {
+                    File.Delete(item);
+                }
+                catch (Exception e)
+                {
+                    Log.WritWTime("Tax-Aide old file delete failed, Exception = " + e.ToString());
+                    Log.WritWTime("Non-Fatal Continuing");
+                    continue;
+                }
             }
             Log.WritWTime("Count of TaxAide script files removed from Hard Drive = " + files.Count.ToString());
         }
@@ -713,10 +727,13 @@ namespace TaxAide_TrueCrypt_Utility
         public static string logPathFile;
         public Log(string str)//by having class NOT static can declare constructor with an argument to pass string through
         {
-            WriteStrm = new StreamWriter(str);
+            WriteStrm = new StreamWriter(str,true);
             logPathFile = str;
             WriteStrm.AutoFlush = true;
-            WriteStrm.WriteLine("AARP Tax-Aide TrueCrypt Utilities Log Startup: " + DateTime.Now.ToString());
+            WriteStrm.WriteLine("***");
+            WriteStrm.WriteLine("***");
+            WriteStrm.WriteLine("***");
+            WriteStrm.WriteLine("            AARP Tax-Aide TrueCrypt Utilities Log Startup: " + DateTime.Now.ToString());
         }
         public static void WritWTime(string str)//declare as static so that can access via class ie the instantiated object name is never used in this class.
         {

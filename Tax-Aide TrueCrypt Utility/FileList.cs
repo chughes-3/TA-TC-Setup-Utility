@@ -282,6 +282,7 @@ namespace TaxAide_TrueCrypt_Utility
             Log.WritWTime("Dialog Close >> Old Paths = " + tcFileTravOldLoc.FileNamePath + " & " + tcFileHDOldLoc.FileNamePath);
             Log.WritWTime("HD Size = " + TrueCryptFilesNew.tcFileHDSizeNew + "MB, Trav Size = " + TrueCryptFilesNew.tcFileTravSizeNew + "MB");
             Close();
+            this.DialogResult = DialogResult.OK;
         }
 
         private void showOtherUsbs_Click(object sender, EventArgs e)
@@ -495,14 +496,21 @@ namespace TaxAide_TrueCrypt_Utility
 
         private int CheckEditBox(RadioButton radioButton, TasksBitField radBut)
         {
-            int input;
+            int input; float inputf=0;
             if (!Int32.TryParse(newFileSizeMB.Text, out input))
             {
-                MessageBox.Show("Non Numeric entry in Volume Size\n\n\t" + newFileSizeMB.Text, TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                newFileSizeMB.Focus();
-                return 0;
+                if (gBytes.Checked && Single.TryParse(newFileSizeMB.Text, out inputf))
+                {
+                    input = (int)(inputf * 1000);
+                }
+                else
+                {
+                    MessageBox.Show("Non Numeric or non Integer Megabyte entry in Volume Size\n\n\t" + newFileSizeMB.Text, TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    newFileSizeMB.Focus();
+                    return 0;
+                }
             }
-            if (gBytes.Checked) { input *= 1000; }
+            if (gBytes.Checked && inputf==0) { input *= 1000; }
             if (input > 7000)
             {
                 if (DialogResult.No == MessageBox.Show("Are you sure you meant this Volume size\n" + input.ToString() + "MB will take a really long time to format", TrueCryptSWObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
