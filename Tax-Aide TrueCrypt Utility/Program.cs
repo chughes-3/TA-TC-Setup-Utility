@@ -28,7 +28,7 @@ namespace TaxAide_TrueCrypt_Utility
                 MessageBox.Show("This program is already running", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Environment.Exit(1);
             }
-            Log tcFileResizerLog = new Log(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TA Utility 4TC TY11.log");
+            Log tcFileResizerLog = new Log(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TA Utility 4TC TY10.log");
             TrueCryptFile tcFileHDOld = new TrueCryptFile(); //setup object to hold original file information name path and if traveler plus methods
             TrueCryptFile tcFileTravOld = new TrueCryptFile();
             TasksBitField tasklist = new TasksBitField(); //setup object to hold flags of things to be done1
