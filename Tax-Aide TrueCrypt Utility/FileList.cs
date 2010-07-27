@@ -122,7 +122,15 @@ namespace TaxAide_TrueCrypt_Utility
         {
             if (TrueCryptSWObj.tCryptRegEntry == null)
             {//just go straight to install on c drive
-                radioButton1.Text = "Install Software, Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                if (tcFileHDOldLoc.FileNamePath == null)
+                {
+                    radioButton1.Text = "Install Software, Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                }
+                else //to cater to where people have done manual uninstall but left data drive there
+                {
+                    radioButton1.Text = "Install Software, Resize TrueCrypt Volume on " + tcFileHDOldLoc.FileNamePath;
+                    radioBut1.SetFlag(TasksBitField.Flag.hdTcfileOldRename);
+                }
                 radioBut1.SetFlag(TasksBitField.Flag.hdTcSwInstall);
                 radioBut1.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);
                 radioBut1.SetFlag(TasksBitField.Flag.hdTCFileFormat);
@@ -365,7 +373,7 @@ namespace TaxAide_TrueCrypt_Utility
                     }
                 }
             }
-            else
+            else //radio button 1 is checked
             {
                 groupBox2.Enabled = true;
                 // radio button 1 checked have to do size computation only fr traveler
@@ -414,10 +422,17 @@ namespace TaxAide_TrueCrypt_Utility
         {
             TrueCryptFilesNew.tcFilePathTravNew = drv + "\\" + tcFilename;
             if (File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe"))
-            {   //existence of this directory means at 6.2 or 6.3
-                string str = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe").FileVersion;
-                Log.WriteStrm.WriteLine("FileList Traveler TrueCrypt Program Path = " + drv + "\\Tax-Aide_Traveler\\TrueCrypt.exe" + " Version=" + str);
-                //in future test for traveler sw release here and upgrade
+            {   //existence of this directory means at 6.2 plus
+                string travVer = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe").FileVersion;
+                Log.WriteStrm.WriteLine("FileList Traveler TrueCrypt Program Path = " + travVer + "\\Tax-Aide_Traveler\\TrueCrypt.exe" + " Version=" + travVer);
+                if (string.Compare(travVer,TrueCryptSWObj.tcSetupVersion) < 0)
+                {
+                    tasklist1.SetFlag(TasksBitField.Flag.travTASwOldDelete);
+                    tasklist1.SetFlag(TasksBitField.Flag.travTASwOldIsver6_2);
+                    tasklist1.SetFlag(TasksBitField.Flag.travSwInstall);
+                    tasklist1.SetFlag(TasksBitField.Flag.travtcFileFormat);
+                    Log.WriteStrm.WriteLine("FileList Traveler TrueCrypt to be upgraded from version " + travVer);
+                }
             }
             else
             {
@@ -443,20 +458,21 @@ namespace TaxAide_TrueCrypt_Utility
             if (TrueCryptSWObj.tCryptRegEntry != null)
             {
                 string str = FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion;
-                if (string.Compare(FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion, TrueCryptSWObj.tcSetupVersion) <= 0)
+                if (string.Compare(FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion, TrueCryptSWObj.tcSetupVersion) < 0)
                 {//upgrade on host
                     tasklist1.SetFlag(TasksBitField.Flag.hdTASwOldDelete);
                     tasklist1.SetFlag(TasksBitField.Flag.hdTcSwUninstall);
                     tasklist1.SetFlag(TasksBitField.Flag.hdTcSwInstall);
                     if (tcFileHDOldLoc.FileNamePath != null)
                     {
+                        tasklist1.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);//to make sue we install TA sw if data file does not need to be upgraded
                         Log.WritWTime(tcFileHDOldLoc.FileNamePath + ", " + FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion); 
                     }
                     else
                     {
                         Log.WritWTime("No Hard Drive TC File");  
                     }
-                    if (tcFileHDOldLoc.FileNamePath != null & string.Compare(FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion, "6.2") < 0)
+                    if (tcFileHDOldLoc.FileNamePath != null & string.Compare(FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion, TrueCryptSWObj.tcDataUpgrade) < 0)
                     {
                         if (tasklist1.TestTrav())
                         {

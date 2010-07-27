@@ -16,13 +16,19 @@ namespace TaxAide_TrueCrypt_Utility
         public string variableText;
         public TcAction.Action activeFunction;
     }
+    //New TrueCrypot Version
+    //Delete old form embedded and edd new version display properites and change "build action" to "embedded resource' 
+    //change dialog box title. Do a search through entire project for old version and check all references
+    //Classes4objects setup program name, sw version and data version to be upgraded  
+    // Change Assembly versioning
+    //
     public class TCWin //this class is all about the TrueCrypt winodws that are open when TC is running install uninstall or formatting
     {
          public static List<string> dlgBoxTitles = new List<string>()    // when have new TrueCrypt version must check dialog box titles
          {
              "TrueCrypt Setup",
              "Truecrypt Volume Creation Wizard",
-             "TrueCrypt Setup 6.3a",
+             "TrueCrypt Setup 7.0",
          };
         public StringBuilder winText = new StringBuilder(1024); //for all window text as one long string
         public StringBuilder staticText = new StringBuilder(1024); //for all static window text as one long string
@@ -39,7 +45,7 @@ namespace TaxAide_TrueCrypt_Utility
         public int hWndHandle;//handle for window associated with this object
         public int hWndDialog; // to track case of dialog box
         public static bool uninstallFailContinue;   //a boolean to remember passing through a dialog box when back at main window recursion loop
-        public delegate bool Callback(int hWnd, int lParam); //Used to enum child windows in initialisation and chekc if windows changed
+        public delegate bool Callback(int hWnd, int lParam); //Used to enum child windows in initialisation and check if windows changed
         public static object actionsList; //used to record which format,extract etc doing
         public TcAction.Action activeFunction;
         protected delegate void DoActDel(TCWin tcwin);//setup byinitial SetupDoActionList
@@ -108,7 +114,7 @@ namespace TaxAide_TrueCrypt_Utility
 
         public int DoActionWait()
         {
-            DoAction(this);// goes to tcaction and does approprieat thing
+            DoAction(this);// goes to tcaction and does appropriate thing
 // Wait for next window region
                 int i = 0;
                 while ((Win32.FindWindow("CustomDlg", mainWinTitle) != 0) & (winChanged != true))

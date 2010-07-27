@@ -81,22 +81,29 @@ namespace TaxAide_TrueCrypt_Utility
             {
                 int scanCode = VKeytoScanCodeCls.Lookup(c);
                 int LParam = Win32.MakeLParam(0x0001, scanCode);
-                int t = Win32.SendMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.WM_CHAR, (IntPtr)Convert.ToInt32(c), (IntPtr)LParam);
+                int t = Win32.PostMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.WM_CHAR, (IntPtr)Convert.ToInt32(c), (IntPtr)LParam);
             }   // Next section allows multiple buttons (including radio buttons) to be clicked
             string[] buttonStrings = winAction[r].captionText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in buttonStrings)
-            {
-                NextButton(item, string.Empty);
+            {// special processing to convert Next button to enter key to whole window caused by vol loc screen change in TC7.0 (never save history checkbox went from an s to an n same as next
+                if (string.Compare(item,"Next",true) == 0)
+                {
+                    Win32.PostMessage(tcWin.hWndHandle, (int)win32Message.WM_KEYDOWN, (IntPtr)'\r', (IntPtr)0x1C0001);
+                }
+                else
+                {
+                    NextButton(item, string.Empty); 
+                }
             }
         }
         protected void ComboSelect()    //assumes unique win text is picked up by win contrl list
         {
             int wCtrLstIndex = tcWin.winCtrlList.FindIndex(delegate(TCWin.WinCtrls w) { return (w.cntrlClass.Equals("ComboBox") & w.caption.Contains(winAction[r].captionText)); });
-            StringBuilder txt = new StringBuilder(10);
+            StringBuilder txt = new StringBuilder(20);
             int variableTextCommaIndex = winAction[r].variableText.IndexOf(',');
             txt.Append(winAction[r].variableText.Substring(0, variableTextCommaIndex));
             int ret = Win32.SendMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.CB_SELECTSTRING, (IntPtr)(-1), txt);
-            NextButton(winAction[r].variableText.Substring(variableTextCommaIndex + 1), string.Empty);//Assumes this is always the next button when combo box involved otherwise have to do something complex with data like sharing the variable string. Could do a return keydown message to wondow
+            NextButton(winAction[r].variableText.Substring(variableTextCommaIndex + 1), string.Empty);//Assumes this is always the next button when combo box involved otherwise have to do something complex with data like sharing the variable string. Could do a return keydown message to window
         }
         protected void RestartExit()    //TC installation
         {
@@ -146,6 +153,7 @@ namespace TaxAide_TrueCrypt_Utility
             int scanCode = VKeytoScanCodeCls.Lookup(Char.Parse(tcWin.winCtrlList[wCtrLstIndex].caption.Substring(1, 1)));
             int LParam = Win32.MakeLParam(0x0001, scanCode);
             Win32.PostMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.WM_CHAR, (IntPtr)ch, (IntPtr)LParam);
+            //Log.WritWTime("hctrl = " + tcWin.hWndHandle.ToString() + tcWin.winCtrlList[wCtrLstIndex].cntrlClass.ToString() + " " + tcWin.winCtrlList[wCtrLstIndex].caption + " char ch = " + ch);
         }
         #endregion
     }

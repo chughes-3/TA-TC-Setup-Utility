@@ -21,7 +21,7 @@ namespace TaxAide_TrueCrypt_Utility
             Regex myPatt = new Regex(@"\((.*)\)"); //extract process friendly name from full process
             Process myProc = Process.GetCurrentProcess();
             Match myMatch = myPatt.Match(myProc.ToString());
-            String myProcFriendly = myMatch.Value.Substring(1, myMatch.Length - 2);
+            String myProcFriendly = myMatch.Value.Substring(1, myMatch.Length - 2);//get rid of parentheses
             Process[] myProcArray = Process.GetProcessesByName(myProcFriendly);
             if (myProcArray.GetLength(0) > 1)
             {

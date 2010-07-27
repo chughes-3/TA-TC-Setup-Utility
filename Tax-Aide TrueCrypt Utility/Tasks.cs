@@ -20,6 +20,7 @@ namespace TaxAide_TrueCrypt_Utility
             travTASwOldDelete = travTcfileOldCopy << 1, //80    
             travSwInstall = travTASwOldDelete << 1,     //100
             travtcFileFormat = travSwInstall << 1,      //200
+            travTASwOldIsver6_2 = travtcFileFormat <<1  //400
         }
         private uint taskBits;
         public uint taskList
