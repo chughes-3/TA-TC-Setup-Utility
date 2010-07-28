@@ -243,10 +243,10 @@ namespace TaxAide_TrueCrypt_Utility
                 {
 
                     tasklist1.taskList |= radioBut2.taskList;   //do initial setup of tasks
-                    if (radioBut2.IsOn(TasksBitField.Flag.hdTcSwInstall))
-                    {
-                        Check4HostUpgrade();
-                    }
+                    //if (radioBut2.IsOn(TasksBitField.Flag.hdTcSwInstall))
+                    //{
+                        Check4HostUpgrade(); //whatever was selected need to check for upgrade
+                    //}
                     if (radioBut2.IsOn(TasksBitField.Flag.travSwInstall))
                     {//we have a request to upgrade sw means tc vol MAY exist
                         string drv = travUSBDrv[(int)radioButton2.Tag].drvName;
@@ -254,30 +254,24 @@ namespace TaxAide_TrueCrypt_Utility
                         if (travUSBDrv[(int)radioButton2.Tag].tcFilePoss != string.Empty)
                         {
                             tcFileTravOldLoc.FileNamePath = travUSBDrv[(int)radioButton2.Tag].tcFilePoss;
-                            if (tasklist1.IsOn(TasksBitField.Flag.travTASwOldDelete))
-                            {//we are dong full upgrade due to old sw, so must set data move
+                            if (tasklist1.IsOn(TasksBitField.Flag.travTASwOldDelete) && !tasklist1.IsOn(TasksBitField.Flag.travTASwOldIsver6_2))
+                            {//we are dong full upgrade due to old sw, so must set data move but only if pre 6.2
                                 tasklist1.SetFlag(TasksBitField.Flag.travTcfileOldCopy);
+                                tasklist1.SetFlag(TasksBitField.Flag.travtcFileFormat);
+                                // set the file size to be the same as old
+                                FileInfo f = new FileInfo(tcFileTravOldLoc.FileNamePath);
+                                TrueCryptFilesNew.tcFileTravSizeNew = (int)Math.Ceiling(f.Length / (double)1048576);
                             }                            
                         }
                     }
-                    if (radioBut2.IsOn(TasksBitField.Flag.travtcFileFormat)) //set by make new
+                    if (radioBut2.IsOn(TasksBitField.Flag.travtcFileFormat)) 
                     {//we have create a new traveler file
-                        TrueCryptFilesNew.tcFileTravSizeNew = CheckEditBox(radioButton2, radioBut2);    // check on size error = 0
-                        if (TrueCryptFilesNew.tcFileTravSizeNew == 0)
-                        {   // data entry error clear tasklist previously set
-                            tasklist1.taskList = 0;
-                            return;
-                        }
                         string drv = travUSBDrv[(int)radioButton2.Tag].drvName;
                         if (TrueCryptSWObj.tCryptRegEntry == null)
                         {// nothing on host so must setup fqn for traveler
                             TrueCryptSWObj.tcProgramFQN = drv + "\\" + "\\Tax-Aide_Traveler\\truecrypt.exe";
                             TrueCryptSWObj.tcProgramDirectory = TrueCryptSWObj.tcProgramFQN.Substring(0, TrueCryptSWObj.tcProgramFQN.Length - 14);
                         }
-                        checkTravSwExists(drv); //checks if sw exists and sets flags for upgrades if necessary plus sets new traveler filepath
-                        //now check if need host upgrade to work with traveler
-                        Check4HostUpgrade();
-
                     }
                 }
                 else
@@ -430,7 +424,7 @@ namespace TaxAide_TrueCrypt_Utility
                     tasklist1.SetFlag(TasksBitField.Flag.travTASwOldDelete);
                     tasklist1.SetFlag(TasksBitField.Flag.travTASwOldIsver6_2);
                     tasklist1.SetFlag(TasksBitField.Flag.travSwInstall);
-                    tasklist1.SetFlag(TasksBitField.Flag.travtcFileFormat);
+                    //file format not set because no forced data upgrade in this section
                     Log.WriteStrm.WriteLine("FileList Traveler TrueCrypt to be upgraded from version " + travVer);
                 }
             }

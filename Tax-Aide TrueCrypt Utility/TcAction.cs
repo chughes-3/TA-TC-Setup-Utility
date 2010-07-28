@@ -14,7 +14,7 @@ namespace TaxAide_TrueCrypt_Utility
         protected abstract List<NextWinAction> winAction { get; } //minimum required to define a property even though do not ever use get to pull complete list
         public delegate void Action();
         TCWin tcWin;
-
+        internal int nFlag = 0; //diagnostic for arg out of range on xp
         #region DoAction and consequent Action Functions
         public void DoAction(TCWin tcWinParam)
         {
@@ -102,8 +102,10 @@ namespace TaxAide_TrueCrypt_Utility
             StringBuilder txt = new StringBuilder(20);
             int variableTextCommaIndex = winAction[r].variableText.IndexOf(',');
             txt.Append(winAction[r].variableText.Substring(0, variableTextCommaIndex));
+            nFlag = 1; //diagnostic for arg out of range on xp
             int ret = Win32.SendMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.CB_SELECTSTRING, (IntPtr)(-1), txt);
             NextButton(winAction[r].variableText.Substring(variableTextCommaIndex + 1), string.Empty);//Assumes this is always the next button when combo box involved otherwise have to do something complex with data like sharing the variable string. Could do a return keydown message to window
+            nFlag = 0; //diagnostic for arg out of range on xp
         }
         protected void RestartExit()    //TC installation
         {
@@ -141,9 +143,21 @@ namespace TaxAide_TrueCrypt_Utility
             int wCtrLstIndex = 0;
             int ch = 0;
             wCtrLstIndex = tcWin.winCtrlList.FindIndex(delegate(TCWin.WinCtrls w) { return (w.cntrlClass.Equals("Button") & w.caption.Contains(caption)); });
+            if (nFlag == 1)  //diagnostic for arg out of range on xp
+            {
+                Log.WritWTime("NextButton = " + wCtrLstIndex.ToString());  //diagnostic for arg out of range on xp
+            }
             if (sendLetter == string.Empty)
             {
+                if (nFlag == 1)  //diagnostic for arg out of range on xp
+                {
+                    Log.WritWTime("caption = " + tcWin.winCtrlList[wCtrLstIndex].caption); //Ampersand marks letter used to operate button
+                }
                 int posAmp = tcWin.winCtrlList[wCtrLstIndex].caption.IndexOf('&') + 1; //Ampersand marks letter used to operate button
+                if (nFlag == 1)  //diagnostic for arg out of range on xp
+                {
+                    Log.WritWTime("poAmp = " + posAmp.ToString()); //Ampersand marks letter used to operate button
+                }
                 ch = Char.Parse(tcWin.winCtrlList[wCtrLstIndex].caption.Substring(posAmp, 1));//  Convert character after & in the string to int32                
             }
             else

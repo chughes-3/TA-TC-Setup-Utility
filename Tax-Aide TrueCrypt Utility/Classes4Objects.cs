@@ -174,7 +174,8 @@ namespace TaxAide_TrueCrypt_Utility
                 Log.WriteStrm.WriteLine("TrueCrypt Registry Entry = " + tCryptRegEntry);
                 tcProgramFQN = tCryptRegEntry.Substring(1, tCryptRegEntry.Length - 10); //registry entry has a leading quote that needs to go
                 tcProgramDirectory = tcProgramFQN.Substring(0, tcProgramFQN.Length - 14);
-                File.Delete(Dlls.GetAllUsersDesktopFolderPath() + "\\TrueCrypt.lnk"); //gets newly installed truecrypt icon off desktop
+                File.Delete(Dlls.GetAllUsersDesktopFolderPath() + "\\TrueCrypt.lnk"); //gets newly installed truecrypt icon off desktop for xp
+                File.Delete(Dlls.GetSharedDesktop() + "\\TrueCrypt.lnk"); //gets newly installed truecrypt icon off desktop for vista 7
             } 
      #endregion
 
