@@ -24,21 +24,25 @@ namespace TaxAide_TrueCrypt_Utility
         TasksBitField tasklist1;
         TrueCryptFile tcFileHDOldLoc;
         TrueCryptFile tcFileTravOldLoc;
-        public FileList(TasksBitField tasklistpassed,TrueCryptFile tcFileHDOld,TrueCryptFile tcFileTravOld)
+        private System.Reflection.Assembly assem;
+        public FileList(TasksBitField tasklistpassed, TrueCryptFile tcFileHDOld, TrueCryptFile tcFileTravOld, string calledArg)
         {
             InitializeComponent();
             tasklist1 = tasklistpassed;
             tcFileHDOldLoc = tcFileHDOld;
             tcFileTravOldLoc = tcFileTravOld;
             radioButton1.Text = "Text";
-            System.Reflection.Assembly assem = System.Reflection.Assembly.GetExecutingAssembly();
+            assem = System.Reflection.Assembly.GetExecutingAssembly();
             System.Reflection.AssemblyName assemName = assem.GetName();
             this.Text += " Ver " + assemName.Version.ToString();
             //radioButton2.Enabled = false;
-
+            
       #region Get data for decisions on hard drive and traveler drive
             //Build list of usb connected drives first so can test against it in tcfileobject instance
-            GetUSBDrives(); //returns travusbdrv which is logical drive name and vol label and a combo string tcfile poss to be set here
+            if (calledArg != "format" || assem.Location.Substring(0,2) != Environment.GetEnvironmentVariable("HOMEDRIVE") )
+            {//ie do this if not being called from start tax-aide drive to do a format on the hard drive
+                GetUSBDrives(); //returns travusbdrv which is logical drive name and vol label and a combo string tcfile poss to be set here            
+            }
             //Analyze hard drive situation
             TrueCryptFilesNew.tcFilePathHDNew = Environment.GetEnvironmentVariable("HOMEDRIVE") + "\\" + tcFilename; //sets up new name will be changed next for vista/w7
             // Find out if hard drive tpdata exists
@@ -80,12 +84,17 @@ namespace TaxAide_TrueCrypt_Utility
     #endregion
 
     #region Decisions to setup initial form
-            //Priority to flash keys if they are inserted. button 1 is only one that contains requirements for volume size to be filled out button 2 is strictly for software upgrades except for 2 blank travelers
-            if (travTcFilePossCount > 0 | travUSBDrv.Count > 0)
+            //1st priority to see if running from an existing installation, if so only thing can do is format. After that priority to flash keys if they are inserted. button 1 is only one that contains requirements for volume size to be filled out button 2 is strictly for software upgrades except for 2 blank travelers
+            //if (assem.Location.Contains("TrueCrypt\\Tax-Aide")||assem.Location.Contains("Tax-Aide_Traveler"))
+            if (calledArg == "format")
+            {//we are running from an existing install probably called from Start_Tax-Aide_drive.exe
+                SetFormatClsStartProcess();
+            }
+            else if (travTcFilePossCount > 0 | travUSBDrv.Count > 0)
             {
                 SetButtons4Traveler();
             }
-            else
+            else 
             {//just go straight to install on c drive
                 SetButtons4HD();
                 radioButton3.Visible = false;
@@ -146,6 +155,7 @@ namespace TaxAide_TrueCrypt_Utility
                     radioBut1.SetFlag(TasksBitField.Flag.hdTcfileOldRename);
                     radioBut1.SetFlag(TasksBitField.Flag.hdTCFileFormat);
                     radioButton2.Text = "Upgrade TrueCrypt and Tax-Aide Software on (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                    radioBut2.SetFlag(TasksBitField.Flag.hdTASwOldDelete);
                     radioBut2.SetFlag(TasksBitField.Flag.hdTcSwUninstall);
                     radioBut2.SetFlag(TasksBitField.Flag.hdTcSwInstall);
                     radioBut2.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);
@@ -195,6 +205,29 @@ namespace TaxAide_TrueCrypt_Utility
                 else { radioButton2.Visible = false; }
             }
         }
+        private void SetFormatClsStartProcess()
+        {
+            Log.WritWTime(assem.Location);
+            //if (assem.Location.Contains("bin\\Debug")) //"bin\\debug" for debug purposes and "TrueCrypt\\Tax-Aide" for real
+            if (assem.Location.Contains("TrueCrypt\\Tax-Aide")) //"bin\\debug" for debug purposes and "TrueCrypt\\Tax-Aide" for real
+            {//We are on hard drive
+                radioButton1.Text = "Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                radioBut1.SetFlag(TasksBitField.Flag.hdTCFileFormat);
+                Log.WritWTime("Formatting TC drive on Hard Drive called from Start_Tax-Aide_Drive");
+            }
+            else
+            {// we have Traveler
+                string drv = assem.Location.Substring(0, 2);
+                //Next get index in travusbdrv list
+                
+                Log.WritWTime("Formatting TC Drive on Traveler called from Start_Tax-Aide_Drive on Traveler " + drv);
+                radioButton1.Text = "Create Traveler Volume on " + drv;
+                radioButton1.Tag = travUSBDrv.FindIndex(delegate(DrvInfo s) { return (s.drvName == drv); });
+                radioBut1.SetFlag(TasksBitField.Flag.travtcFileFormat);
+            }
+            radioButton2.Visible = false;
+            radioButton3.Visible = false;
+        }
         private void OK_Click(object sender, EventArgs e)
         {
             if (radioButton1.Checked == true)
@@ -208,7 +241,7 @@ namespace TaxAide_TrueCrypt_Utility
                         tasklist1.taskList = 0;
                         return;
                     }
-                    if (!File.Exists(TrueCryptSWObj.tcProgramDirectory + "\\Tax-Aide" + taSWExist) | !Directory.Exists(TrueCryptSWObj.tcProgramDirectory))
+                    if (!File.Exists(TrueCryptSWObj.tcProgramDirectory + "\\Tax-Aide\\" + taSWExist) | !Directory.Exists(TrueCryptSWObj.tcProgramDirectory))
                     {
                         tasklist1.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);   // to deal with case that only TC installed previously now want to create/resize
                     }
@@ -415,11 +448,14 @@ namespace TaxAide_TrueCrypt_Utility
         void checkTravSwExists(string drv)
         {
             TrueCryptFilesNew.tcFilePathTravNew = drv + "\\" + tcFilename;
-            if (File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe"))
+            if (Directory.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler"))
             {   //existence of this directory means at 6.2 plus
-                string travVer = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe").FileVersion;
-                Log.WriteStrm.WriteLine("FileList Traveler TrueCrypt Program Path = " + travVer + "\\Tax-Aide_Traveler\\TrueCrypt.exe" + " Version=" + travVer);
-                if (string.Compare(travVer,TrueCryptSWObj.tcSetupVersion) < 0)
+                string travVer = "";
+                if (File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe"))
+                {
+                    travVer = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe").FileVersion; 
+                }
+                if (!File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe") || string.Compare(travVer,TrueCryptSWObj.tcSetupVersion) < 0) //caters to directory existing but no files in it or being at less than current release
                 {
                     tasklist1.SetFlag(TasksBitField.Flag.travTASwOldDelete);
                     tasklist1.SetFlag(TasksBitField.Flag.travTASwOldIsver6_2);
@@ -447,7 +483,7 @@ namespace TaxAide_TrueCrypt_Utility
                 }
             }
         }
-        void Check4HostUpgrade()
+        internal void Check4HostUpgrade() //called in this file and from program.cs for called from startTaxAideDrive
         {
             if (TrueCryptSWObj.tCryptRegEntry != null)
             {
@@ -457,9 +493,9 @@ namespace TaxAide_TrueCrypt_Utility
                     tasklist1.SetFlag(TasksBitField.Flag.hdTASwOldDelete);
                     tasklist1.SetFlag(TasksBitField.Flag.hdTcSwUninstall);
                     tasklist1.SetFlag(TasksBitField.Flag.hdTcSwInstall);
-                    if (tcFileHDOldLoc.FileNamePath != null)
-                    {
-                        tasklist1.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);//to make sue we install TA sw if data file does not need to be upgraded
+                    if (tcFileHDOldLoc.FileNamePath != null || tasklist1.IsOn(TasksBitField.Flag.hdTCFileFormat))
+                    {//in case of call to format from startTaxAideDrive get here with no old data file but file format set
+                        tasklist1.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);//to make sure we install TA sw if data file does not need to be upgraded
                         Log.WritWTime(tcFileHDOldLoc.FileNamePath + ", " + FileVersionInfo.GetVersionInfo(TrueCryptSWObj.tcProgramFQN).FileVersion); 
                     }
                     else
@@ -555,6 +591,7 @@ namespace TaxAide_TrueCrypt_Utility
                 }
                 DriveInfo drv = new DriveInfo(travUSBDrv[(int)radioButton.Tag].drvName);
                 long maxSize = drv.TotalFreeSpace - 10000000 + oldFSize;
+                
                 if (maxSize < input * 1048576)
                 {
                     MessageBox.Show("Volume Size is larger that possible on this flash drive\n\t" + newFileSizeMB.Text + " MBytes\n\nThe Maximum is " + (maxSize / 1048576).ToString() + " MBytes", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -624,9 +661,9 @@ namespace TaxAide_TrueCrypt_Utility
     }
     public class DrvInfo
     {
-        public string drvName;
-        public string volName;
-        public string combo;
+        public string drvName;  //C: or G: whatever
+        public string volName;  //Volume name
+        public string combo;    //drvname (Volname)
         public string tcFilePoss;
     }
 

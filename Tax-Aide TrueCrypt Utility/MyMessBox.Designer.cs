@@ -72,6 +72,7 @@
             this.Controls.Add(this.OK_Button);
             this.Controls.Add(this.Message);
             this.Controls.Add(this.pictureBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MyMessBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -82,6 +82,10 @@ namespace TaxAide_TrueCrypt_Utility
             {
                 Log.WriteStrm.WriteLine("Trav tc file Create/Format");
             }
+            if (this.IsOn(Flag.travTASwOldIsver6_2))
+            {
+                Log.WriteStrm.WriteLine("Existing Traveler is 6.2 or greater");
+            }
         }
     }
 }

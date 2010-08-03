@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgessOverall));
             this.statusText = new System.Windows.Forms.Label();
             this.title = new System.Windows.Forms.Label();
             this.statusSecond = new System.Windows.Forms.Label();
@@ -70,6 +71,7 @@
             this.Controls.Add(this.statusSecond);
             this.Controls.Add(this.title);
             this.Controls.Add(this.statusText);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProgessOverall";
             this.Text = "Tax-Aide TrueCrypt Utility";
             this.ResumeLayout(false);

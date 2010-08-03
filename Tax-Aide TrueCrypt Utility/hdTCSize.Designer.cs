@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(hdTCSize));
             this.Title = new System.Windows.Forms.Label();
             this.existingSize = new System.Windows.Forms.Label();
             this.fileSize = new System.Windows.Forms.TextBox();
@@ -135,6 +136,7 @@
             this.Controls.Add(this.fileSize);
             this.Controls.Add(this.existingSize);
             this.Controls.Add(this.Title);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "hdTCSize";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tax-Aide TrueCrypt utility";
