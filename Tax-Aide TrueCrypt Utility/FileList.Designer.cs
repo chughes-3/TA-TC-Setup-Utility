@@ -42,6 +42,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.sizeLabel = new System.Windows.Forms.Label();
             this.showOtherUsbs = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -117,7 +118,7 @@
             // 
             this.newFileSizeMB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.newFileSizeMB.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.newFileSizeMB.Location = new System.Drawing.Point(88, 73);
+            this.newFileSizeMB.Location = new System.Drawing.Point(131, 73);
             this.newFileSizeMB.Name = "newFileSizeMB";
             this.newFileSizeMB.Size = new System.Drawing.Size(54, 20);
             this.newFileSizeMB.TabIndex = 6;
@@ -128,7 +129,7 @@
             // gBytes
             // 
             this.gBytes.AutoSize = true;
-            this.gBytes.Location = new System.Drawing.Point(221, 74);
+            this.gBytes.Location = new System.Drawing.Point(264, 74);
             this.gBytes.Name = "gBytes";
             this.gBytes.Size = new System.Drawing.Size(59, 17);
             this.gBytes.TabIndex = 8;
@@ -139,7 +140,7 @@
             // 
             this.mBytes.AutoSize = true;
             this.mBytes.Checked = true;
-            this.mBytes.Location = new System.Drawing.Point(154, 74);
+            this.mBytes.Location = new System.Drawing.Point(197, 74);
             this.mBytes.Name = "mBytes";
             this.mBytes.Size = new System.Drawing.Size(60, 17);
             this.mBytes.TabIndex = 7;
@@ -160,6 +161,7 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.sizeLabel);
             this.groupBox2.Controls.Add(this.gBytes);
             this.groupBox2.Controls.Add(this.label2);
@@ -191,6 +193,15 @@
             this.showOtherUsbs.UseVisualStyleBackColor = true;
             this.showOtherUsbs.Visible = false;
             this.showOtherUsbs.Click += new System.EventHandler(this.showOtherUsbs_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(38, 77);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(90, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "New Volume Size";
             // 
             // FileList
             // 
@@ -233,6 +244,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button showOtherUsbs;
         private System.Windows.Forms.Label sizeLabel;
+        private System.Windows.Forms.Label label3;
     }
 }
 

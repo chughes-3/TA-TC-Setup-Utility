@@ -20,6 +20,7 @@ namespace TaxAide_TrueCrypt_Utility
         public static readonly string tcSetupVersion = "7.0"; // this is version below which TC software upgrade on trav of hd will happen
         internal static readonly string tcDataUpgrade = "6.2"; //version below which we force a data file copy during upgrade
         public static readonly string tcDriveLetter = "P:";  //used to open drives to copy old to new
+        internal static readonly string programName = "Tax-Aide TrueCrypt Utility.exe"; //used when copy this program to install directory
         public static readonly string mbCaption = "AARP Tax-Aide TrueCrypt Utility";
         public static string tcProgramFQN = string.Empty;
         public static string tcProgramDirectory;
@@ -599,7 +600,7 @@ namespace TaxAide_TrueCrypt_Utility
             CopyFileFromThisAssembly("Stop_Tax-Aide_Drive.exe", destDir);
             System.Reflection.Assembly assem = System.Reflection.Assembly.GetExecutingAssembly(); // to copy this file to folder
             string thisProgFilePath = assem.Location;
-            File.Copy(thisProgFilePath, destDir + thisProgFilePath.Substring(thisProgFilePath.LastIndexOf("\\")), true);
+            File.Copy(thisProgFilePath, destDir + "\\" + programName, true);
             if (FileList.travUSBDrv.Exists(delegate(DrvInfo s) { return s.drvName.Equals(destDir.Substring(0, 2).ToUpper()); }))  //tests whether this is a usb connected drive
             {
                 Log.WritWTime("Copying unique traveler files from Assembly to Drive");
