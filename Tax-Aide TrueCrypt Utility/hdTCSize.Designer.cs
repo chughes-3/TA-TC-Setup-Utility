@@ -115,6 +115,7 @@
             // 
             // but_OK
             // 
+            this.but_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.but_OK.Location = new System.Drawing.Point(173, 163);
             this.but_OK.Name = "but_OK";
             this.but_OK.Size = new System.Drawing.Size(76, 23);
@@ -125,8 +126,10 @@
             // 
             // hdTCSize
             // 
+            this.AcceptButton = this.but_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.but_Cancel;
             this.ClientSize = new System.Drawing.Size(284, 200);
             this.Controls.Add(this.but_OK);
             this.Controls.Add(this.but_Cancel);

@@ -641,6 +641,7 @@ namespace TaxAide_TrueCrypt_Utility
                             n = fsSource.Read(dataBuffer, 0, 2048);
                             fsNew.Write(dataBuffer, 0, n);
                         }
+                        fsNew.Flush();// I would have thought using fixed this but one error on xp was fixed by this.
                     }
                 }
             }
