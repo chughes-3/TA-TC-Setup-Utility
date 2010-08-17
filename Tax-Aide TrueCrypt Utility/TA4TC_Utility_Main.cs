@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace TaxAide_TrueCrypt_Utility
 {
-    static class Program
+    static class TA4TC_Utility_Main
     {
         /// <summary>
         /// The main entry point for the application.Normal application run with no arguments. 2 circumstances it is called by "Start Tax-Aide Drive"

@@ -91,7 +91,7 @@
     <Compile Include="ProgessOverall.Designer.cs">
       <DependentUpon>ProgessOverall.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="TA4TC_Utility_Main.cs" />
     <Compile Include="ProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>

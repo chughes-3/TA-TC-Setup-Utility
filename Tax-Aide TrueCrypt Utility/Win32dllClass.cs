@@ -458,7 +458,6 @@ namespace TaxAide_TrueCrypt_Utility
         //SendMessage to a window function FOr control focus. Hnd window handle msg as an integer and last 2 params are variable. Here spec's as wparam is control handle and lparam is true (it would be false for tabstop control movement
         [DllImport("User32.dll")]
         public static extern int SendMessage(int hWnd, int Msg, int wParam, bool lParam);
-        //Below is setup to get a window state (minimized etc)
         [DllImport("User32.dll")]
         public static extern int PostMessage(int hWnd, int Msg, IntPtr wParam, IntPtr lParam);
         //GetWindowThreadProcessId function retrieves the identifier of the thread that created the specified window and, optionally, the identifier of the process that created the window.
@@ -467,7 +466,7 @@ namespace TaxAide_TrueCrypt_Utility
         //The EnumThreadWindows function enumerates all nonchild windows associated with a thread by passing the handle to each window, in turn, to an application-defined callback function. EnumThreadWindows continues until the last window is enumerated or the callback function returns FALSE. To enumerate child windows of a particular window, use the EnumChildWindows function.
         [DllImport("User32.dll")]
         public static extern bool EnumThreadWindows(long thread, Delegate lpEnumFunc, int lParam);
-
+        //Below is setup to get a window state (minimized etc)
         private struct WINDOWPLACEMENT
         {
             public int length;

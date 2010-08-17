@@ -16,7 +16,7 @@ namespace TaxAide_TrueCrypt_Utility
     
     class TrueCryptSWObj
     {
-        readonly string tcSetupProgramName = "TrueCrypt Setup 7.0.exe";    //  Cecks for upgrades done in FileList.CHeck4Hostupgrade & FileList.checkTravSwExists these are strings MUST change when change the release of TC
+        readonly string tcSetupProgramName = "TrueCrypt Setup 7.0.exe";    //  Checks for upgrades done in FileList.CHeck4Hostupgrade & FileList.checkTravSwExists these are strings MUST change when change the release of TC
         public static readonly string tcSetupVersion = "7.0"; // this is version below which TC software upgrade on trav of hd will happen
         internal static readonly string tcDataUpgrade = "6.2"; //version below which we force a data file copy during upgrade
         public static readonly string tcDriveLetter = "P:";  //used to open drives to copy old to new
