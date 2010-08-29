@@ -15,7 +15,7 @@ namespace TaxAide_TrueCrypt_Utility
         public ProgressForm(string message)
         {
             InitializeComponent();
-            label1.Text = message;
+            labelFileCop.Text = message;
         }
         public void DoProgressStep()
         {

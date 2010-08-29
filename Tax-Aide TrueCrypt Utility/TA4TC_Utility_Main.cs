@@ -30,6 +30,13 @@ namespace TaxAide_TrueCrypt_Utility
                 MessageBox.Show("This program is already running", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Environment.Exit(1);
             }
+            System.Security.Principal.WindowsIdentity me = System.Security.Principal.WindowsIdentity.GetCurrent();
+            System.Security.Principal.WindowsPrincipal prin = new System.Security.Principal.WindowsPrincipal(me);
+            if (!prin.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
+            {//we are not an administrator user need to exit
+                MessageBox.Show("This program must run under a Windows Administrator User", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                Environment.Exit(1);
+            }
             Log tcFileResizerLog = new Log(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TA Utility 4TC TY10.log");
             string hostUpgOrFormatCall;
             TrueCryptFile tcFileHDOld = new TrueCryptFile(); //setup object to hold original file information name path and if traveler plus methods

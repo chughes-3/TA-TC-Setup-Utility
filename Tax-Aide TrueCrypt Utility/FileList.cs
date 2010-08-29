@@ -31,10 +31,10 @@ namespace TaxAide_TrueCrypt_Utility
             tasklist1 = tasklistpassed;
             tcFileHDOldLoc = tcFileHDOld;
             tcFileTravOldLoc = tcFileTravOld;
-            radioButton1.Text = "Text";
+            taskChoice1.Text = "Text";
             assem = System.Reflection.Assembly.GetExecutingAssembly();
             System.Reflection.AssemblyName assemName = assem.GetName();
-            this.Text += " Ver " + assemName.Version.ToString();
+            //this.Text += " Ver " + assemName.Version.ToString();// used to put version into title
             //radioButton2.Enabled = false;
             
       #region Get data for decisions on hard drive and traveler drive
@@ -97,7 +97,7 @@ namespace TaxAide_TrueCrypt_Utility
             else 
             {//just go straight to install on c drive
                 SetButtons4HD();
-                radioButton3.Visible = false;
+                taskChoice3.Visible = false;
             }
 
     #endregion
@@ -106,43 +106,43 @@ namespace TaxAide_TrueCrypt_Utility
    #region Radio button 3 checked changed redo radiobutton content
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButton3.Checked == true)
+            if (taskChoice3.Checked == true)
             {
                 //Clear tasks
                 radioBut1.taskList = 0;
                 radioBut2.taskList = 0;
                 radioBut3.taskList = 0;
-                if ((string)radioButton3.Tag == "HD")
+                if ((string)taskChoice3.Tag == "HD")
                 {//change top buttons to HD
                     usbSelectionComboBox.Visible = false;
                     SetButtons4HD();
-                        radioButton3.Text = "Do Tasks on Traveler Drive ";
-                        radioButton3.Tag = "TRAV";
+                        taskChoice3.Text = "Do Tasks on Traveler Drive ";
+                        taskChoice3.Tag = "TRAV";
                 }
                 else
                 {
                     SetButtons4Traveler();
                 }
-                radioButton1.Checked = true;
+                taskChoice1.Checked = true;
             }
         } 
         #endregion
         private void SetButtons4HD()
         {
-            radioButton2.Visible = true; // in case we started with single traveler then switched to hard drive
+            taskChoice2.Visible = true; // in case we started with single traveler then switched to hard drive
             if (TrueCryptSWObj.tCryptRegEntry == null)
             {//just go straight to install on c drive
                 if (tcFileHDOldLoc.FileNamePath == null)
                 {
-                    radioButton1.Text = "Install Software, Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
-                    radioButton2.Text = "Install TrueCrypt Software on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                    taskChoice1.Text = "Install Software, Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                    taskChoice2.Text = "Install TrueCrypt Software on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
                     radioBut2.SetFlag(TasksBitField.Flag.hdTcSwInstall);
                 }
                 else //to cater to where people have done manual uninstall but left data drive there
                 {
-                    radioButton1.Text = "Install Software, Resize TrueCrypt Volume on " + tcFileHDOldLoc.FileNamePath;
+                    taskChoice1.Text = "Install Software, Resize TrueCrypt Volume on " + tcFileHDOldLoc.FileNamePath;
                     radioBut1.SetFlag(TasksBitField.Flag.hdTcfileOldRename);
-                    radioButton2.Text = "Install TrueCrypt and Tax-Aide Software on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                    taskChoice2.Text = "Install TrueCrypt and Tax-Aide Software on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
                     radioBut2.SetFlag(TasksBitField.Flag.hdTcSwInstall);
                     radioBut2.SetFlag(TasksBitField.Flag.hdTaxaideSwInstall);
                 }
@@ -155,10 +155,10 @@ namespace TaxAide_TrueCrypt_Utility
 
                 if (tcFileHDOldLoc.FileNamePath != null)
                 {
-                    radioButton1.Text = "Resize TrueCrypt Volume on " + tcFileHDOldLoc.FileNamePath;
+                    taskChoice1.Text = "Resize TrueCrypt Volume on " + tcFileHDOldLoc.FileNamePath;
                     radioBut1.SetFlag(TasksBitField.Flag.hdTcfileOldRename);
                     radioBut1.SetFlag(TasksBitField.Flag.hdTCFileFormat);
-                    radioButton2.Text = "Upgrade TrueCrypt and Tax-Aide Software on (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                    taskChoice2.Text = "Upgrade TrueCrypt and Tax-Aide Software on (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
                     radioBut2.SetFlag(TasksBitField.Flag.hdTASwOldDelete);
                     radioBut2.SetFlag(TasksBitField.Flag.hdTcSwUninstall);
                     radioBut2.SetFlag(TasksBitField.Flag.hdTcSwInstall);
@@ -166,9 +166,9 @@ namespace TaxAide_TrueCrypt_Utility
                 }
                 else
                 {
-                    radioButton1.Text = "Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                    taskChoice1.Text = "Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
                     radioBut1.SetFlag(TasksBitField.Flag.hdTCFileFormat);
-                    radioButton2.Text = "Upgrade TrueCrypt Software on (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")" + ", no Tax-Aide Icons or Scripts";
+                    taskChoice2.Text = "Upgrade TrueCrypt Software on (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")" + ", no Tax-Aide Icons or Scripts";
                     radioBut2.SetFlag(TasksBitField.Flag.hdTcSwUninstall);
                     radioBut2.SetFlag(TasksBitField.Flag.hdTcSwInstall);
                 }
@@ -179,32 +179,32 @@ namespace TaxAide_TrueCrypt_Utility
         {
             if (travTcFilePossCount > 0)
             {
-                radioButton1.Tag = travUSBDrv.FindIndex(delegate(DrvInfo s) { return (s.tcFilePoss != string.Empty); });
-                radioButton1.Text = "Resize Traveler Volume on " + travUSBDrv[(int)radioButton1.Tag].combo;
+                taskChoice1.Tag = travUSBDrv.FindIndex(delegate(DrvInfo s) { return (s.tcFilePoss != string.Empty); });
+                taskChoice1.Text = "Resize Traveler Volume on " + travUSBDrv[(int)taskChoice1.Tag].combo;
                 radioBut1.SetFlag(TasksBitField.Flag.travTcfileOldCopy);
                 radioBut1.SetFlag(TasksBitField.Flag.travtcFileFormat);
-                radioButton2.Tag = travUSBDrv.FindIndex(delegate(DrvInfo s) { return (s.tcFilePoss != string.Empty); });
-                radioButton2.Text = "Upgrade TrueCrypt Software on " + travUSBDrv[(int)radioButton2.Tag].combo;
+                taskChoice2.Tag = travUSBDrv.FindIndex(delegate(DrvInfo s) { return (s.tcFilePoss != string.Empty); });
+                taskChoice2.Text = "Upgrade TrueCrypt Software on " + travUSBDrv[(int)taskChoice2.Tag].combo;
                 radioBut2.SetFlag(TasksBitField.Flag.travSwInstall);
-                radioButton3.Text = "Do Tasks on Hard Drive ";
-                radioButton3.Tag = "HD";
+                taskChoice3.Text = "Do Tasks on Hard Drive ";
+                taskChoice3.Tag = "HD";
                 if (travUSBDrv.Count > 1){ SetupUSBComboBox(); }
             }
             else if (travUSBDrv.Count > 0)
             {
-                radioButton1.Text = "Create Traveler Volume on " + travUSBDrv[0].combo;
-                radioButton1.Tag = 0;
+                taskChoice1.Text = "Create Traveler Volume on " + travUSBDrv[0].combo;
+                taskChoice1.Tag = 0;
                 radioBut1.SetFlag(TasksBitField.Flag.travtcFileFormat);
-                radioButton3.Text = "Do Tasks on Hard Drive";
-                radioButton3.Tag = "HD";
+                taskChoice3.Text = "Do Tasks on Hard Drive";
+                taskChoice3.Tag = "HD";
                 if (travUSBDrv.Count > 1)
                 {
-                    radioButton2.Text = "Create Traveler Volume on " + travUSBDrv[1].combo;
+                    taskChoice2.Text = "Create Traveler Volume on " + travUSBDrv[1].combo;
                     radioBut2.SetFlag(TasksBitField.Flag.travtcFileFormat);
-                    radioButton2.Tag = 1;
+                    taskChoice2.Tag = 1;
                     if (travUSBDrv.Count > 2) { SetupUSBComboBox(); }
                 }
-                else { radioButton2.Visible = false; }
+                else { taskChoice2.Visible = false; }
             }
         }
         private void SetFormatClsStartProcess()
@@ -213,7 +213,7 @@ namespace TaxAide_TrueCrypt_Utility
             //if (assem.Location.Contains("bin\\Debug")) //"bin\\debug" for debug purposes and "TrueCrypt\\Tax-Aide" for real
             if (assem.Location.Contains("TrueCrypt\\Tax-Aide")) //"bin\\debug" for debug purposes and "TrueCrypt\\Tax-Aide" for real
             {//We are on hard drive
-                radioButton1.Text = "Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
+                taskChoice1.Text = "Create TrueCrypt Volume on Hard Drive (" + Environment.GetEnvironmentVariable("HOMEDRIVE") + ")";
                 radioBut1.SetFlag(TasksBitField.Flag.hdTCFileFormat);
                 Log.WritWTime("Formatting TC drive on Hard Drive called from Start_Tax-Aide_Drive");
             }
@@ -223,21 +223,21 @@ namespace TaxAide_TrueCrypt_Utility
                 //Next get index in travusbdrv list
                 
                 Log.WritWTime("Formatting TC Drive on Traveler called from Start_Tax-Aide_Drive on Traveler " + drv);
-                radioButton1.Text = "Create Traveler Volume on " + drv;
-                radioButton1.Tag = travUSBDrv.FindIndex(delegate(DrvInfo s) { return (s.drvName == drv); });
+                taskChoice1.Text = "Create Traveler Volume on " + drv;
+                taskChoice1.Tag = travUSBDrv.FindIndex(delegate(DrvInfo s) { return (s.drvName == drv); });
                 radioBut1.SetFlag(TasksBitField.Flag.travtcFileFormat);
             }
-            radioButton2.Visible = false;
-            radioButton3.Visible = false;
+            taskChoice2.Visible = false;
+            taskChoice3.Visible = false;
         }
         private void OK_Click(object sender, EventArgs e)
         {
-            if (radioButton1.Checked == true)
+            if (taskChoice1.Checked == true)
             {
                 tasklist1.taskList |= radioBut1.taskList;   //do initial setup of tasks
                 if (radioBut1.IsOn(TasksBitField.Flag.hdTCFileFormat)) //therefore resize or create a volume
                 {
-                    TrueCryptFilesNew.tcFileHDSizeNew = CheckEditBox(radioButton1, radioBut1);    // check on size error = 0
+                    TrueCryptFilesNew.tcFileHDSizeNew = CheckEditBox(taskChoice1, radioBut1);    // check on size error = 0
                     if (TrueCryptFilesNew.tcFileHDSizeNew == 0)
                     {   // data entry error clear tasklist previously set
                         tasklist1.taskList = 0;
@@ -251,17 +251,17 @@ namespace TaxAide_TrueCrypt_Utility
                 }
                 if (radioBut1.IsOn(TasksBitField.Flag.travTcfileOldCopy))   // must be done first to set up size for traveler size checking
                 {
-                    tcFileTravOldLoc.FileNamePath = travUSBDrv[(int)radioButton1.Tag].tcFilePoss; 
+                    tcFileTravOldLoc.FileNamePath = travUSBDrv[(int)taskChoice1.Tag].tcFilePoss; 
                 }
                 if (radioBut1.IsOn(TasksBitField.Flag.travtcFileFormat)) //set by both resize and make new
                 {//we have create a new traveler file NEW filename set in checkTravswexists
-                    TrueCryptFilesNew.tcFileTravSizeNew = CheckEditBox(radioButton1, radioBut1);    // check on size error = 0
+                    TrueCryptFilesNew.tcFileTravSizeNew = CheckEditBox(taskChoice1, radioBut1);    // check on size error = 0
                     if (TrueCryptFilesNew.tcFileTravSizeNew == 0) //checkedit box returns zero if data entry is zero
                     {   // data entry error clear tasklist previously set
                         tasklist1.taskList = 0;
                         return;
                     }
-                    string drv = travUSBDrv[(int)radioButton1.Tag].drvName;
+                    string drv = travUSBDrv[(int)taskChoice1.Tag].drvName;
                     if (TrueCryptSWObj.tCryptRegEntry == null)
                     {// nothing on host so must setup fqn for traveler
                         TrueCryptSWObj.tcProgramFQN = drv + "\\" + "\\Tax-Aide_Traveler\\truecrypt.exe";
@@ -274,7 +274,7 @@ namespace TaxAide_TrueCrypt_Utility
             }
             else
             {
-                if (radioButton2.Checked == true)
+                if (taskChoice2.Checked == true)
                 {
 
                     tasklist1.taskList |= radioBut2.taskList;   //do initial setup of tasks
@@ -284,11 +284,11 @@ namespace TaxAide_TrueCrypt_Utility
                     //}
                     if (radioBut2.IsOn(TasksBitField.Flag.travSwInstall))
                     {//we have a request to upgrade sw means tc vol MAY exist
-                        string drv = travUSBDrv[(int)radioButton2.Tag].drvName;
+                        string drv = travUSBDrv[(int)taskChoice2.Tag].drvName;
                         checkTravSwExists(drv); //checks if sw exists and sets flags for upgrades if necessary                        
-                        if (travUSBDrv[(int)radioButton2.Tag].tcFilePoss != string.Empty)
+                        if (travUSBDrv[(int)taskChoice2.Tag].tcFilePoss != string.Empty)
                         {
-                            tcFileTravOldLoc.FileNamePath = travUSBDrv[(int)radioButton2.Tag].tcFilePoss;
+                            tcFileTravOldLoc.FileNamePath = travUSBDrv[(int)taskChoice2.Tag].tcFilePoss;
                             if (tasklist1.IsOn(TasksBitField.Flag.travTASwOldDelete) && !tasklist1.IsOn(TasksBitField.Flag.travTASwOldIsver6_2))
                             {//we are dong full upgrade due to old sw, so must set data move but only if pre 6.2
                                 tasklist1.SetFlag(TasksBitField.Flag.travTcfileOldCopy);
@@ -301,7 +301,7 @@ namespace TaxAide_TrueCrypt_Utility
                     }
                     if (radioBut2.IsOn(TasksBitField.Flag.travtcFileFormat)) 
                     {//we have create a new traveler file
-                        string drv = travUSBDrv[(int)radioButton2.Tag].drvName;
+                        string drv = travUSBDrv[(int)taskChoice2.Tag].drvName;
                         if (TrueCryptSWObj.tCryptRegEntry == null)
                         {// nothing on host so must setup fqn for traveler
                             TrueCryptSWObj.tcProgramFQN = drv + "\\" + "\\Tax-Aide_Traveler\\truecrypt.exe";
@@ -323,10 +323,10 @@ namespace TaxAide_TrueCrypt_Utility
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            if (!radioButton1.Checked)
+            if (!taskChoice1.Checked)
             {
 
-                if (radioButton2.Checked & !radioBut2.IsOn(TasksBitField.Flag.travtcFileFormat))
+                if (taskChoice2.Checked & !radioBut2.IsOn(TasksBitField.Flag.travtcFileFormat))
                 {//only time need vol size is if radio button 2 is on usb tc file create
                     groupBox2.Enabled = false;
                     sizeLabel.Visible = false;
@@ -336,7 +336,7 @@ namespace TaxAide_TrueCrypt_Utility
                     groupBox2.Enabled = true;
                     if (radioBut2.IsOn(TasksBitField.Flag.travtcFileFormat))
                     {
-                        string drvStr = travUSBDrv[(int)radioButton2.Tag].drvName;
+                        string drvStr = travUSBDrv[(int)taskChoice2.Tag].drvName;
                         DriveInfo drv = new DriveInfo(drvStr);
                         int space = (int)(drv.TotalFreeSpace / 1048576);
                         if (!Directory.Exists(drvStr + "\\traveler"))
@@ -346,7 +346,7 @@ namespace TaxAide_TrueCrypt_Utility
                         int oldTravFileSize = 0;
                         if (radioBut1.IsOn(TasksBitField.Flag.travTcfileOldCopy))
                         {// we have old traveler vol
-                            FileInfo f = new FileInfo(travUSBDrv[(int)radioButton1.Tag].tcFilePoss);
+                            FileInfo f = new FileInfo(travUSBDrv[(int)taskChoice1.Tag].tcFilePoss);
                             oldTravFileSize = (int)(f.Length / 1048576);
                             space += oldTravFileSize;
                         }
@@ -379,7 +379,7 @@ namespace TaxAide_TrueCrypt_Utility
                 // radio button 1 checked have to do size computation only fr traveler
                 if (radioBut1.IsOn(TasksBitField.Flag.travtcFileFormat))
                 {//we have to create new traveler
-                    string drvStr = travUSBDrv[(int)radioButton1.Tag].drvName;
+                    string drvStr = travUSBDrv[(int)taskChoice1.Tag].drvName;
                     DriveInfo drv = new DriveInfo(drvStr);
                     int space = (int)(drv.TotalFreeSpace / 1048576);
                     if (!Directory.Exists(drvStr + "\\traveler"))
@@ -389,7 +389,7 @@ namespace TaxAide_TrueCrypt_Utility
                     int oldTravFileSize = 0;
                     if (radioBut1.IsOn(TasksBitField.Flag.travTcfileOldCopy))
                     {// we have old traveler vol
-                        FileInfo f = new FileInfo(travUSBDrv[(int)radioButton1.Tag].tcFilePoss);
+                        FileInfo f = new FileInfo(travUSBDrv[(int)taskChoice1.Tag].tcFilePoss);
                         oldTravFileSize = (int)(f.Length / 1048576);
                         space += oldTravFileSize;
                     }
@@ -665,24 +665,24 @@ namespace TaxAide_TrueCrypt_Utility
             int selectedDriveIndex =usbSelectionComboBox.SelectedIndex -1;
             if (travUSBDrv[selectedDriveIndex].tcFilePoss != string.Empty)
             {//need 2 buttons for the drive cause TC file exists
-                radioButton1.Tag = selectedDriveIndex;
-                radioButton1.Text = "Resize Traveler Volume on " + travUSBDrv[(int)radioButton1.Tag].combo;
+                taskChoice1.Tag = selectedDriveIndex;
+                taskChoice1.Text = "Resize Traveler Volume on " + travUSBDrv[(int)taskChoice1.Tag].combo;
                 radioBut1.SetFlag(TasksBitField.Flag.travTcfileOldCopy);
                 radioBut1.SetFlag(TasksBitField.Flag.travtcFileFormat);
-                radioButton2.Tag = selectedDriveIndex;
-                radioButton2.Text = "Upgrade TrueCrypt Software on " + travUSBDrv[(int)radioButton2.Tag].combo;
+                taskChoice2.Tag = selectedDriveIndex;
+                taskChoice2.Text = "Upgrade TrueCrypt Software on " + travUSBDrv[(int)taskChoice2.Tag].combo;
                 radioBut2.SetFlag(TasksBitField.Flag.travSwInstall);
-                radioButton2.Visible = true;
+                taskChoice2.Visible = true;
             }
             else
             {//no tc file so just drive
-                radioButton1.Text = "Create Traveler Volume on " + travUSBDrv[selectedDriveIndex].combo;
-                radioButton1.Tag = selectedDriveIndex;
+                taskChoice1.Text = "Create Traveler Volume on " + travUSBDrv[selectedDriveIndex].combo;
+                taskChoice1.Tag = selectedDriveIndex;
                 radioBut1.SetFlag(TasksBitField.Flag.travtcFileFormat);
-                radioButton2.Visible = false;
+                taskChoice2.Visible = false;
             }
-            radioButton1.Checked = false;
-            radioButton1.Checked = true;    //forces update of size in groupbox plus makes sure something checked
+            taskChoice1.Checked = false;
+            taskChoice1.Checked = true;    //forces update of size in groupbox plus makes sure something checked
 
         }
     }

@@ -32,7 +32,7 @@
             this.Title = new System.Windows.Forms.Label();
             this.existingSize = new System.Windows.Forms.Label();
             this.fileSize = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelNewSize = new System.Windows.Forms.Label();
             this.mBytes = new System.Windows.Forms.RadioButton();
             this.gBytes = new System.Windows.Forms.RadioButton();
             this.but_Cancel = new System.Windows.Forms.Button();
@@ -71,14 +71,14 @@
             this.fileSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.fileSize.Enter += new System.EventHandler(this.OnEnter);
             // 
-            // label1
+            // labelNewSize
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(38, 100);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "New Size";
+            this.labelNewSize.AutoSize = true;
+            this.labelNewSize.Location = new System.Drawing.Point(38, 100);
+            this.labelNewSize.Name = "labelNewSize";
+            this.labelNewSize.Size = new System.Drawing.Size(52, 13);
+            this.labelNewSize.TabIndex = 3;
+            this.labelNewSize.Text = "New Size";
             // 
             // mBytes
             // 
@@ -135,7 +135,7 @@
             this.Controls.Add(this.but_Cancel);
             this.Controls.Add(this.gBytes);
             this.Controls.Add(this.mBytes);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelNewSize);
             this.Controls.Add(this.fileSize);
             this.Controls.Add(this.existingSize);
             this.Controls.Add(this.Title);
@@ -153,7 +153,7 @@
         private System.Windows.Forms.Label Title;
         private System.Windows.Forms.Label existingSize;
         private System.Windows.Forms.TextBox fileSize;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelNewSize;
         private System.Windows.Forms.RadioButton mBytes;
         private System.Windows.Forms.RadioButton gBytes;
         private System.Windows.Forms.Button but_Cancel;

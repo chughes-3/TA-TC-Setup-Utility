@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressForm));
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelFileCop = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
-            // label1
+            // labelFileCop
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(40, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "File Copying";
+            this.labelFileCop.AutoSize = true;
+            this.labelFileCop.Location = new System.Drawing.Point(40, 23);
+            this.labelFileCop.Name = "labelFileCop";
+            this.labelFileCop.Size = new System.Drawing.Size(64, 13);
+            this.labelFileCop.TabIndex = 0;
+            this.labelFileCop.Text = "File Copying";
             // 
             // progressBar1
             // 
@@ -58,7 +58,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(432, 130);
             this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelFileCop);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProgressForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -70,7 +70,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelFileCop;
         private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

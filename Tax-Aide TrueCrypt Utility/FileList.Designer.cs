@@ -29,57 +29,57 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileList));
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.taskChoice1 = new System.Windows.Forms.RadioButton();
+            this.taskChoice2 = new System.Windows.Forms.RadioButton();
+            this.taskChoice3 = new System.Windows.Forms.RadioButton();
             this.OK = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.mainLabel = new System.Windows.Forms.Label();
             this.newFileSizeMB = new System.Windows.Forms.TextBox();
             this.gBytes = new System.Windows.Forms.RadioButton();
             this.mBytes = new System.Windows.Forms.RadioButton();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelGrpBox = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelVolSize = new System.Windows.Forms.Label();
             this.sizeLabel = new System.Windows.Forms.Label();
             this.usbSelectionComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // radioButton1
+            // taskChoice1
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(22, 59);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(85, 17);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "radioButton1";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.taskChoice1.AutoSize = true;
+            this.taskChoice1.Location = new System.Drawing.Point(22, 59);
+            this.taskChoice1.Name = "taskChoice1";
+            this.taskChoice1.Size = new System.Drawing.Size(84, 17);
+            this.taskChoice1.TabIndex = 1;
+            this.taskChoice1.TabStop = true;
+            this.taskChoice1.Text = "taskChoice1";
+            this.taskChoice1.UseVisualStyleBackColor = true;
+            this.taskChoice1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
-            // radioButton2
+            // taskChoice2
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(22, 82);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(85, 17);
-            this.radioButton2.TabIndex = 2;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "radioButton2";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.taskChoice2.AutoSize = true;
+            this.taskChoice2.Location = new System.Drawing.Point(22, 82);
+            this.taskChoice2.Name = "taskChoice2";
+            this.taskChoice2.Size = new System.Drawing.Size(84, 17);
+            this.taskChoice2.TabIndex = 2;
+            this.taskChoice2.TabStop = true;
+            this.taskChoice2.Text = "taskChoice2";
+            this.taskChoice2.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // taskChoice3
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(22, 105);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(85, 17);
-            this.radioButton3.TabIndex = 3;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "radioButton3";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
+            this.taskChoice3.AutoSize = true;
+            this.taskChoice3.Location = new System.Drawing.Point(22, 105);
+            this.taskChoice3.Name = "taskChoice3";
+            this.taskChoice3.Size = new System.Drawing.Size(84, 17);
+            this.taskChoice3.TabIndex = 3;
+            this.taskChoice3.TabStop = true;
+            this.taskChoice3.Text = "taskChoice3";
+            this.taskChoice3.UseVisualStyleBackColor = true;
+            this.taskChoice3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
             // 
             // OK
             // 
@@ -104,15 +104,15 @@
             this.Cancel.UseVisualStyleBackColor = true;
             this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
-            // label1
+            // mainLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(326, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Select a task, and if necessary a Drive and Volume Size";
+            this.mainLabel.AutoSize = true;
+            this.mainLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainLabel.Location = new System.Drawing.Point(6, 16);
+            this.mainLabel.Name = "mainLabel";
+            this.mainLabel.Size = new System.Drawing.Size(326, 13);
+            this.mainLabel.TabIndex = 12;
+            this.mainLabel.Text = "Select a task, and if necessary a Drive and Volume Size";
             // 
             // newFileSizeMB
             // 
@@ -148,23 +148,23 @@
             this.mBytes.Text = "MBytes";
             this.mBytes.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // labelGrpBox
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(113, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(145, 16);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "TrueCrypt Volume Size";
+            this.labelGrpBox.AutoSize = true;
+            this.labelGrpBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelGrpBox.Location = new System.Drawing.Point(113, 14);
+            this.labelGrpBox.Name = "labelGrpBox";
+            this.labelGrpBox.Size = new System.Drawing.Size(145, 16);
+            this.labelGrpBox.TabIndex = 9;
+            this.labelGrpBox.Text = "TrueCrypt Volume Size";
             // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.labelVolSize);
             this.groupBox2.Controls.Add(this.sizeLabel);
             this.groupBox2.Controls.Add(this.gBytes);
-            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.labelGrpBox);
             this.groupBox2.Controls.Add(this.mBytes);
             this.groupBox2.Controls.Add(this.newFileSizeMB);
             this.groupBox2.Location = new System.Drawing.Point(12, 128);
@@ -173,14 +173,14 @@
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             // 
-            // label3
+            // labelVolSize
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(38, 77);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 13);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "New Volume Size";
+            this.labelVolSize.AutoSize = true;
+            this.labelVolSize.Location = new System.Drawing.Point(38, 77);
+            this.labelVolSize.Name = "labelVolSize";
+            this.labelVolSize.Size = new System.Drawing.Size(90, 13);
+            this.labelVolSize.TabIndex = 11;
+            this.labelVolSize.Text = "New Volume Size";
             // 
             // sizeLabel
             // 
@@ -215,12 +215,12 @@
             this.ClientSize = new System.Drawing.Size(406, 274);
             this.Controls.Add(this.usbSelectionComboBox);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.mainLabel);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
-            this.Controls.Add(this.radioButton3);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
+            this.Controls.Add(this.taskChoice3);
+            this.Controls.Add(this.taskChoice2);
+            this.Controls.Add(this.taskChoice1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FileList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -234,19 +234,19 @@
 
         #endregion
 
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton taskChoice1;
+        private System.Windows.Forms.RadioButton taskChoice2;
+        private System.Windows.Forms.RadioButton taskChoice3;
         private System.Windows.Forms.Button OK;
         private System.Windows.Forms.Button Cancel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label mainLabel;
         private System.Windows.Forms.TextBox newFileSizeMB;
         private System.Windows.Forms.RadioButton gBytes;
         private System.Windows.Forms.RadioButton mBytes;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelGrpBox;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label sizeLabel;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelVolSize;
         private System.Windows.Forms.ComboBox usbSelectionComboBox;
     }
 }
