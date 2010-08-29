@@ -27,7 +27,7 @@ namespace TaxAide_TrueCrypt_Utility
         public static int osVer;    //5=xp 6=vista or win7
         public static string tCryptRegEntry;
         TasksBitField tasklist;
-        int hWnd;   //window handle for TrueCrypt main window (both setup an setup /u and format)
+        IntPtr hWnd;   //window handle for TrueCrypt main window (both setup an setup /u and format)
         public ProgessOverall progOverall;
         string regKeyName = @"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; //used to store old file names
         string regsubKeyName = @"SYSTEM\CurrentControlSet\Control\Session Manager\Environment";
@@ -442,13 +442,13 @@ namespace TaxAide_TrueCrypt_Utility
                 Environment.Exit(1);
             }
             TCWin.mainWinTitle = mainWinTitle;
-            while (Win32.FindWindow(null, mainWinTitle) == 0) //wait for program startup
+            while (Win32.FindWindow(null, mainWinTitle) == IntPtr.Zero) //wait for program startup
             {
                 Thread.Sleep(100);
             }
             Thread.Sleep(1000); //first window takes a while to stabalize
             hWnd = Win32.FindWindow("CustomDlg", mainWinTitle);//CustomDlg
-            if (hWnd == 0)
+            if (hWnd == IntPtr.Zero)
             {
                 Log.WritWTime("Automated TrueCrypt " + uninTxt + " failed.\nPlease " + uninTxt + " TrueCrypt manually then restart this program");
                 MessageBox.Show("Automated TrueCrypt " + uninTxt + " failed.\nPlease " + uninTxt + " TrueCrypt manually then restart this program", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -460,7 +460,7 @@ namespace TaxAide_TrueCrypt_Utility
                 Log.WriteStrm.WriteLine(uninTxt + "start up window still set to non visible - we have entered this section of code");
             }
             int i = 0;
-            while (Win32.FindWindow("CustomDlg", TCWin.mainWinTitle) != 0)
+            while (Win32.FindWindow("CustomDlg", TCWin.mainWinTitle) != IntPtr.Zero)
             {
                 if (uninTxt == "format")  // format seems to take extra time to unpack itself
                 {

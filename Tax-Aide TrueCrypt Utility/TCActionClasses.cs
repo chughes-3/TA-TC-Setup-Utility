@@ -40,19 +40,19 @@ namespace TaxAide_TrueCrypt_Utility
         {
             public string cntrlClass;
             public string caption;
-            public int hCtrl;
+            public IntPtr hCtrl;
         }
-        public int hWndHandle;//handle for window associated with this object
-        public int hWndDialog; // to track case of dialog box
+        public IntPtr hWndHandle;//handle for window associated with this object
+        public IntPtr hWndDialog; // to track case of dialog box
         public static bool uninstallFailContinue;   //a boolean to remember passing through a dialog box when back at main window recursion loop
-        public delegate bool Callback(int hWnd, int lParam); //Used to enum child windows in initialisation and check if windows changed
+        public delegate bool Callback(IntPtr hWnd, int lParam); //Used to enum child windows in initialisation and check if windows changed
         public static object actionsList; //used to record which format,extract etc doing
         public TcAction.Action activeFunction;
         protected delegate void DoActDel(TCWin tcwin);//setup byinitial SetupDoActionList
         protected DoActDel DoAction;
 
    #region TC window Class object initializer to get all Window data Delegate and CallBack,plus setup action list
-        public TCWin(int hWnd) //initial constructor
+        public TCWin(IntPtr hWnd) //initial constructor
         {
             hWndHandle = hWnd;
             if (actionsList is TcActionExtract)
@@ -82,7 +82,7 @@ namespace TaxAide_TrueCrypt_Utility
             //Log.WriteStrm.WriteLine(staticText.ToString()); // for those occasions when want to write all text that will be searched
             //Log.WriteStrm.WriteLine(winText.ToString());
         }
-        public bool EnumChildGetValue(int hWnd, int lParam)
+        public bool EnumChildGetValue(IntPtr hWnd, int lParam)
         {
             StringBuilder wintxt = new StringBuilder(256);
             int txtLen;
@@ -117,7 +117,7 @@ namespace TaxAide_TrueCrypt_Utility
             DoAction(this);// goes to tcaction and does appropriate thing
 // Wait for next window region
                 int i = 0;
-                while ((Win32.FindWindow("CustomDlg", mainWinTitle) != 0) & (winChanged != true))
+                while ((Win32.FindWindow("CustomDlg", mainWinTitle) != IntPtr.Zero) & (winChanged != true))
                 {//Main Wait loop
                     Thread.Sleep(200);
                     int j = TestWinUpdate(hWndHandle);
@@ -131,13 +131,13 @@ namespace TaxAide_TrueCrypt_Utility
                         {
                             return 0; //break out of loop this indicates that we have a chnage and it is not a dialog box
                         }
-                        hWndDialog = 0;
+                        hWndDialog = IntPtr.Zero;
                        return 1;
                     }
                 }
                 Thread.Sleep(200); //to let window show before continue
             //Come out of action and wait loops here so test for exit conditions
-            if (Win32.FindWindow("CustomDlg", mainWinTitle) == 0)   // normal exit when TrueCrypt process has disappeared
+            if (Win32.FindWindow("CustomDlg", mainWinTitle) == IntPtr.Zero)   // normal exit when TrueCrypt process has disappeared
             {
                 if (actionsList is TcActionExtract)
                 {
@@ -187,7 +187,7 @@ namespace TaxAide_TrueCrypt_Utility
         }
 
 #region Test if window has changed Function or generated a dialog box
-		public int TestWinUpdate(int hWnd)
+		public int TestWinUpdate(IntPtr hWnd)
         {
             hWndHandle = hWnd;
             // attempt to get top windows from thread but generated protection fault and picks up default ime window first 
@@ -196,8 +196,8 @@ namespace TaxAide_TrueCrypt_Utility
             //Win32.EnumThreadWindows(threadID, ThreadWinCallBack, 0);
             foreach (string str in dlgBoxTitles)
             {
-                int tmphWnd = Win32.FindWindow("#32770", str); //this is class code for dialog box
-                if (tmphWnd != 0)
+                IntPtr tmphWnd = Win32.FindWindow("#32770", str); //this is class code for dialog box
+                if (tmphWnd != IntPtr.Zero)
                 {
                     if (winCtrlList[0].cntrlClass != "#32770")
                     {
@@ -231,7 +231,7 @@ namespace TaxAide_TrueCrypt_Utility
             Win32.EnumChildWindows(hWnd, ChildWinCallBack, 0);
             return 0;
         }
-        public bool EnumChildGethWnds(int ahWnd, int lParam)
+        public bool EnumChildGethWnds(IntPtr ahWnd, int lParam)
         {
             StringBuilder wintxt = new StringBuilder(256);
             int txtLen = Win32.GetWindowText(ahWnd, wintxt, 256);
@@ -270,9 +270,9 @@ namespace TaxAide_TrueCrypt_Utility
             return str;
         }
 
-        private string ConvertToHex(int num)
+        private string ConvertToHex(IntPtr num)
         {
-            byte[] mbytes = BitConverter.GetBytes(num);
+            byte[] mbytes = BitConverter.GetBytes((int)num);
             Array.Reverse(mbytes);
             return BitConverter.ToString(mbytes).Replace("-", null);
         }

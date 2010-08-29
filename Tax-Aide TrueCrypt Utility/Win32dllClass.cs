@@ -417,55 +417,55 @@ namespace TaxAide_TrueCrypt_Utility
         } 
 
         [DllImport("User32.dll")]
-        public static extern Int32 FindWindow(String lpClassName, String lpWindowName);
+        public static extern IntPtr FindWindow(String lpClassName, String lpWindowName);
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern bool IsWindowVisible(IntPtr hWnd);
+        public static extern Boolean IsWindowVisible(IntPtr hWnd);
         [DllImport("User32.dll")]
-        public static extern Int32 SetForegroundWindow(int hWnd);
+        public static extern Boolean SetForegroundWindow(IntPtr hWnd);
         [DllImport("User32.dll")]
-        public static extern Boolean EnumChildWindows(int hWndParent, Delegate lpEnumFunc, int lParam);
+        public static extern Boolean EnumChildWindows(IntPtr hWndParent, Delegate lpEnumFunc, int lParam);
         [DllImport("User32.dll")]
-        public static extern Int32 GetWindowText(int hWnd, StringBuilder s, int nMaxCount);
+        public static extern Int32 GetWindowText(IntPtr hWnd, StringBuilder s, int nMaxCount);
         [DllImport("User32.dll")]
-        public static extern Int32 GetWindowTextLength(int hwnd);
+        public static extern Int32 GetWindowTextLength(IntPtr hwnd);
         [DllImport("user32.dll")]
-        public static extern int GetDesktopWindow();
+        public static extern IntPtr GetDesktopWindow();
         [DllImport("user32.dll")]
-        public static extern int GetClassName(int hWnd, StringBuilder s, int nMaxCount);
+        public static extern Int32 GetClassName(IntPtr hWnd, StringBuilder s, int nMaxCount);
         [DllImport("user32.dll")]
-        public static extern int RealGetWindowClass(int hWnd, StringBuilder s, int nMaxCount);
+        public static extern UInt32 RealGetWindowClass(IntPtr hWnd, StringBuilder s, int nMaxCount);
         //SetFocus function sets the keyboard focus to the specified window
         [DllImport("User32.dll")]
-        public static extern Int32 SetFocus(int hwnd);
+        public static extern IntPtr SetFocus(IntPtr hwnd);
         //GetNextDlgGroupItem function retrieves a handle to the first control in a group of controls that precedes (or follows) the specified control in a dialog box
         [DllImport("User32.dll")]
-        public static extern int GetNextDlgGroupItem(int hDlg, int hCtl, bool bPrev);
+        public static extern IntPtr GetNextDlgGroupItem(IntPtr hDlg, IntPtr hCtl, bool bPrev);
         //GetDlgCtrlID function retrieves the identifier of the specified control
         [DllImport("User32.dll")]
-        public static extern int GetDlgCtrlID(int hwndCtrl);
+        public static extern Int32 GetDlgCtrlID(IntPtr hwndCtrl);
         //Reverse of above GetDlgItem function retrieves a handle to a control in the specified dialog box. hDlg handle to dailog box, IDCtrl is control id
         [DllImport("User32.dll")]
-        public static extern int GetDlgItem(int hDlg, int IDCntl);
+        public static extern IntPtr GetDlgItem(IntPtr hDlg, Int32 IDCntl);
         //GetDlgItemText function retrieves the title or text associated with a control in a dialog box
         [DllImport("User32.dll")]
-        public static extern int GetDlgItemText(int hDlg, int hwndCtrl, StringBuilder s, int nMaxCount);
+        public static extern UInt32 GetDlgItemText(IntPtr hDlg, Int32 hwndCtrl, StringBuilder s, Int32 nMaxCount);
         //SendMessage to a window function Hwnd window handle msg as an integer and last 2 params are variable. Here spec's as intptr for lenght and s fro string for getset text. Seems as though compiler figures out correct sub passed on params
         [DllImport("User32.dll")]
-        public static extern int SendMessage(int hWnd, int Msg, IntPtr wParam, StringBuilder lParam);
+        public static extern int SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, StringBuilder lParam);
         //SendMessage to a window function Hwnd window handle msg as an integer and last 2 params are variable. Here spec's as intptr for getting length
         [DllImport("User32.dll")]
-        public static extern int SendMessage(int hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+        public static extern int SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
         //SendMessage to a window function FOr control focus. Hnd window handle msg as an integer and last 2 params are variable. Here spec's as wparam is control handle and lparam is true (it would be false for tabstop control movement
         [DllImport("User32.dll")]
-        public static extern int SendMessage(int hWnd, int Msg, int wParam, bool lParam);
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, bool lParam);
         [DllImport("User32.dll")]
-        public static extern int PostMessage(int hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+        public static extern int PostMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
         //GetWindowThreadProcessId function retrieves the identifier of the thread that created the specified window and, optionally, the identifier of the process that created the window.
         [DllImport("User32.dll")]
-        public static extern long GetWindowThreadProcessId(int hWnd, IntPtr lpdwProcessID);
+        public static extern long GetWindowThreadProcessId(IntPtr hWnd, IntPtr lpdwProcessID);
         //The EnumThreadWindows function enumerates all nonchild windows associated with a thread by passing the handle to each window, in turn, to an application-defined callback function. EnumThreadWindows continues until the last window is enumerated or the callback function returns FALSE. To enumerate child windows of a particular window, use the EnumChildWindows function.
         [DllImport("User32.dll")]
-        public static extern bool EnumThreadWindows(long thread, Delegate lpEnumFunc, int lParam);
+        public static extern Boolean EnumThreadWindows(long thread, Delegate lpEnumFunc, int lParam);
         //Below is setup to get a window state (minimized etc)
         private struct WINDOWPLACEMENT
         {

@@ -39,10 +39,10 @@ namespace TaxAide_TrueCrypt_Utility
             }
             Log tcFileResizerLog = new Log(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TA Utility 4TC TY10.log");
             string hostUpgOrFormatCall;
-            TrueCryptFile tcFileHDOld = new TrueCryptFile(); //setup object to hold original file information name path and if traveler plus methods
-            TrueCryptFile tcFileTravOld = new TrueCryptFile();
+            TrueCryptFile tcFileHDOld = new TrueCryptFile(); //setup object to hold original file information name path for Hard Drive
+            TrueCryptFile tcFileTravOld = new TrueCryptFile();  //setup object to hold original file information name path for Traveler
             TasksBitField tasklist = new TasksBitField(); //setup object to hold flags of things to be done1
-            TrueCryptSWObj TcSoftware = new TrueCryptSWObj();
+            TrueCryptSWObj TcSoftware = new TrueCryptSWObj();//setup object that has all methods to actually do stuff
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (args.Length == 0)
@@ -64,7 +64,7 @@ namespace TaxAide_TrueCrypt_Utility
                 }
             }
             else
-            {//have to upgrade host due to traveler insertion
+            {//have to upgrade host due to traveler insertion called from autoit start script
                 Log.WritWTime("Host upgrade requested by parameter call");
                 InfoFromUser.Check4HostUpgrade(); // sets up necessary flags for upgrade
                 if (TrueCryptFilesNew.tcFileHDSizeNew > 0)

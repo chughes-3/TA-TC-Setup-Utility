@@ -49,6 +49,12 @@ namespace TaxAide_TrueCrypt_Utility
                     return;
                 }
             }
+            if (input < 0)
+            {
+                MessageBox.Show("Negative entry in Volume Size\n\n\t" + fileSize.Text, TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                fileSize.Focus();
+                return;
+            }
             if (input < 5)
             {
                 if (DialogResult.No == MessageBox.Show("Are you sure you meant this Volume size\n\n\t" + input.ToString() + "MB is really small??", TrueCryptSWObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))

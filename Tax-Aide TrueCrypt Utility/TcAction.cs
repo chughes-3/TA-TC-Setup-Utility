@@ -125,7 +125,7 @@ namespace TaxAide_TrueCrypt_Utility
             {   //a fail due to non empty directory so can do install
                 Win32.PostMessage(tcWin.hWndHandle, (int)win32Message.WM_KEYDOWN, (IntPtr)'\r', (IntPtr)0x1C0001); //sends enter to dialog box
                 Thread.Sleep(1000);
-                int hWnd = Win32.FindWindow("CustomDlg", TCWin.mainWinTitle); //now send escape to mainW window
+                IntPtr hWnd = Win32.FindWindow("CustomDlg", TCWin.mainWinTitle); //now send escape to mainW window
                 Win32.PostMessage(hWnd, (int)win32Message.WM_KEYDOWN, (IntPtr)'\u001B', (IntPtr)0x10001); //sends enter to dialog box
                 TCWin.uninstallFailContinue = true;
             }
