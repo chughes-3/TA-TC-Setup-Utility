@@ -103,7 +103,7 @@ namespace TaxAide_TrueCrypt_Utility
             int variableTextCommaIndex = winAction[r].variableText.IndexOf(',');
             txt.Append(winAction[r].variableText.Substring(0, variableTextCommaIndex));
             nFlag = 1; //diagnostic for arg out of range on xp
-            int ret = Win32.SendMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.CB_SELECTSTRING, (IntPtr)(-1), txt);
+            int ret = Win32.SendMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (uint)win32Message.CB_SELECTSTRING, (IntPtr)(-1), txt);
             NextButton(winAction[r].variableText.Substring(variableTextCommaIndex + 1), string.Empty);//Assumes this is always the next button when combo box involved otherwise have to do something complex with data like sharing the variable string. Could do a return keydown message to window
             nFlag = 0; //diagnostic for arg out of range on xp
         }

@@ -6,7 +6,7 @@ using System.Text;
 namespace TaxAide_TrueCrypt_Utility
 {
     #region WM Message Constants
-    enum win32Message : int    //goto http://msdn.microsoft.com/en-us/library/ms649011(VS.85).aspx and search for meaning
+    enum win32Message : uint    //goto http://msdn.microsoft.com/en-us/library/ms649011(VS.85).aspx and search for meaning
     {                           // locally in winuser.h in windows 7 sdk include directory
         WM_NULL =   0x00,
         WM_CREATE = 0x01,
@@ -451,15 +451,15 @@ namespace TaxAide_TrueCrypt_Utility
         public static extern UInt32 GetDlgItemText(IntPtr hDlg, Int32 hwndCtrl, StringBuilder s, Int32 nMaxCount);
         //SendMessage to a window function Hwnd window handle msg as an integer and last 2 params are variable. Here spec's as intptr for lenght and s fro string for getset text. Seems as though compiler figures out correct sub passed on params
         [DllImport("User32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, StringBuilder lParam);
+        public static extern int SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, StringBuilder lParam);
         //SendMessage to a window function Hwnd window handle msg as an integer and last 2 params are variable. Here spec's as intptr for getting length
         [DllImport("User32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+        public static extern int SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
         //SendMessage to a window function FOr control focus. Hnd window handle msg as an integer and last 2 params are variable. Here spec's as wparam is control handle and lparam is true (it would be false for tabstop control movement
         [DllImport("User32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, bool lParam);
+        public static extern int SendMessage(IntPtr hWnd, UInt32 Msg, int wParam, bool lParam);
         [DllImport("User32.dll")]
-        public static extern int PostMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+        public static extern int PostMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
         //GetWindowThreadProcessId function retrieves the identifier of the thread that created the specified window and, optionally, the identifier of the process that created the window.
         [DllImport("User32.dll")]
         public static extern long GetWindowThreadProcessId(IntPtr hWnd, IntPtr lpdwProcessID);

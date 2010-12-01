@@ -28,7 +28,7 @@ namespace TaxAide_TrueCrypt_Utility
          {
              "TrueCrypt Setup",
              "Truecrypt Volume Creation Wizard",
-             "TrueCrypt Setup 7.0",
+             "TrueCrypt Setup 7.0a",
          };
         public StringBuilder winText = new StringBuilder(1024); //for all window text as one long string
         public StringBuilder staticText = new StringBuilder(1024); //for all static window text as one long string
