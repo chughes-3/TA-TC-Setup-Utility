@@ -40,6 +40,10 @@ namespace TaxAide_TrueCrypt_Utility
         {
             return (taskList & (uint)0x3c0) != 0;
         }
+        public bool TestHD()
+        {
+            return (taskList & (uint)0x3f) != 0;
+        }
         public void LogTasks()
         {
             if (this.IsOn(Flag.hdTcfileOldRename))

@@ -67,7 +67,7 @@
             this.fileSize.Name = "fileSize";
             this.fileSize.Size = new System.Drawing.Size(60, 20);
             this.fileSize.TabIndex = 2;
-            this.fileSize.Text = "950 ";
+            this.fileSize.Text = "1500 ";
             this.fileSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.fileSize.Enter += new System.EventHandler(this.OnEnter);
             // 

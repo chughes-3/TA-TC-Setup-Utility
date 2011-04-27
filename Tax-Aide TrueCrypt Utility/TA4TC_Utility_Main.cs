@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
+using System.IO;
 using System.Windows.Forms;
 using System.Threading;
 using System.Diagnostics;
@@ -27,22 +27,24 @@ namespace TaxAide_TrueCrypt_Utility
             Process[] myProcArray = Process.GetProcessesByName(myProcFriendly);
             if (myProcArray.GetLength(0) > 1)
             {
-                MessageBox.Show("This program is already running", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("This program is already running", DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Environment.Exit(1);
             }
             System.Security.Principal.WindowsIdentity me = System.Security.Principal.WindowsIdentity.GetCurrent();
             System.Security.Principal.WindowsPrincipal prin = new System.Security.Principal.WindowsPrincipal(me);
             if (!prin.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
             {//we are not an administrator user need to exit
-                MessageBox.Show("This program must run under a Windows Administrator User", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("This program must run under a Windows Administrator User", DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Environment.Exit(1);
             }
-            Log tcFileResizerLog = new Log(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TA Utility 4TC TY10.log");
+            Log tcFileResizerLog = new Log(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TA Utility 4TC TY11.log");
+            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TA Utility 4TC TY10.log"))
+                File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TA Utility 4TC TY10.log");
             string hostUpgOrFormatCall;
             TrueCryptFile tcFileHDOld = new TrueCryptFile(); //setup object to hold original file information name path for Hard Drive
             TrueCryptFile tcFileTravOld = new TrueCryptFile();  //setup object to hold original file information name path for Traveler
             TasksBitField tasklist = new TasksBitField(); //setup object to hold flags of things to be done1
-            TrueCryptSWObj TcSoftware = new TrueCryptSWObj();//setup object that has all methods to actually do stuff
+            DoTasksObj TcSoftware = new DoTasksObj();//setup object that has all methods to actually do stuff
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (args.Length == 0)
@@ -54,7 +56,7 @@ namespace TaxAide_TrueCrypt_Utility
                 hostUpgOrFormatCall = args[0];
             }
             //hostUpgOrFormatCall = "hostupg"; //for debug purposes format hostupg May also need a change in SetFormatClsStartProcess for debug purposes
-            FileList InfoFromUser = new FileList(tasklist, tcFileHDOld, tcFileTravOld,hostUpgOrFormatCall);
+            GetTasksHI InfoFromUser = new GetTasksHI(tasklist, tcFileHDOld, tcFileTravOld,hostUpgOrFormatCall);
             if (hostUpgOrFormatCall != "hostupg")
             {//user usage or call to format so need to actually show dialog box for interaction
                 InfoFromUser.ShowDialog();
@@ -67,9 +69,9 @@ namespace TaxAide_TrueCrypt_Utility
             {//have to upgrade host due to traveler insertion called from autoit start script
                 Log.WritWTime("Host upgrade requested by parameter call");
                 InfoFromUser.Check4HostUpgrade(); // sets up necessary flags for upgrade
-                if (TrueCryptFilesNew.tcFileHDSizeNew > 0)
+                if (TrueCryptFilesNew.tcFileHDNewSize > 0)
                 {
-                    Log.WritWTime("Host tpdata.tc to be upgraded, new size = " + TrueCryptFilesNew.tcFileHDSizeNew.ToString() + "MB");
+                    Log.WritWTime("Host tpdata.tc to be upgraded, new size = " + TrueCryptFilesNew.tcFileHDNewSize.ToString() + "MB");
                 }
             }
             Log.WritSection(string.Format("TaskList = 0x{0:X}", tasklist.taskList));

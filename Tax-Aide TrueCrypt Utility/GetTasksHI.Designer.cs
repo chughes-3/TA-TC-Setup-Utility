@@ -1,6 +1,6 @@
 ﻿namespace TaxAide_TrueCrypt_Utility
 {
-    partial class FileList
+    partial class GetTasksHI
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileList));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GetTasksHI));
             this.taskChoice1 = new System.Windows.Forms.RadioButton();
             this.taskChoice2 = new System.Windows.Forms.RadioButton();
             this.taskChoice3 = new System.Windows.Forms.RadioButton();
@@ -122,7 +122,7 @@
             this.newFileSizeMB.Name = "newFileSizeMB";
             this.newFileSizeMB.Size = new System.Drawing.Size(54, 20);
             this.newFileSizeMB.TabIndex = 6;
-            this.newFileSizeMB.Text = "950 ";
+            this.newFileSizeMB.Text = "1500 ";
             this.newFileSizeMB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.newFileSizeMB.Enter += new System.EventHandler(this.Edit_Entry);
             // 

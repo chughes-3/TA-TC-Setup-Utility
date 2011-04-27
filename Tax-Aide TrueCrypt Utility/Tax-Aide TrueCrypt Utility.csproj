@@ -66,12 +66,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes4Objects.cs" />
-    <Compile Include="FileList.cs">
+    <Compile Include="DoTasksTCFileObjs.cs" />
+    <Compile Include="PasswordCollection.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FileList.Designer.cs">
-      <DependentUpon>FileList.cs</DependentUpon>
+    <Compile Include="PasswordCollection.designer.cs">
+      <DependentUpon>PasswordCollection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetTasksHI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetTasksHI.Designer.cs">
+      <DependentUpon>GetTasksHI.cs</DependentUpon>
     </Compile>
     <Compile Include="hdTCSize.cs">
       <SubType>Form</SubType>
@@ -99,8 +105,8 @@
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FileList.resx">
-      <DependentUpon>FileList.cs</DependentUpon>
+    <EmbeddedResource Include="GetTasksHI.resx">
+      <DependentUpon>GetTasksHI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
@@ -186,6 +192,9 @@
   <ItemGroup>
     <Content Include="AARPLookAlike.ico" />
     <EmbeddedResource Include="Embedded\TrueCrypt Setup 7.0a.exe" />
+    <EmbeddedResource Include="PasswordCollection.resx">
+      <DependentUpon>PasswordCollection.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

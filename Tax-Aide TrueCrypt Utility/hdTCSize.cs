@@ -16,6 +16,10 @@ namespace TaxAide_TrueCrypt_Utility
         {
             InitializeComponent();
             existingSize.Text = oldFileSizeMB.ToString() + " MBytes";
+            if (oldFileSizeMB <= GetTasksHI.defaultTCFileSize)
+                fileSize.Text = GetTasksHI.defaultTCFileSize.ToString();
+            else
+                fileSize.Text = oldFileSizeMB.ToString();
         }
 
         private void OnEnter(object sender, EventArgs e)
@@ -36,14 +40,14 @@ namespace TaxAide_TrueCrypt_Utility
             int input;
             if (!Int32.TryParse(fileSize.Text, out input))
             {
-                MessageBox.Show("Non Numeric entry in Volume Size\n\n\t" + fileSize.Text, TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Non Numeric entry in Volume Size\n\n\t" + fileSize.Text, DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 fileSize.Focus();
                 return;
             }
             if (gBytes.Checked) { input *= 1000; }
             if (input > 7000)
             {
-                if (DialogResult.No == MessageBox.Show("Are you sure you meant this Volume size\n" + input.ToString() + "MB will take a really long time to format", TrueCryptSWObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                if (DialogResult.No == MessageBox.Show("Are you sure you meant this Volume size\n" + input.ToString() + "MB will take a really long time to format", DoTasksObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
                     fileSize.Focus();
                     return;
@@ -51,13 +55,13 @@ namespace TaxAide_TrueCrypt_Utility
             }
             if (input < 0)
             {
-                MessageBox.Show("Negative entry in Volume Size\n\n\t" + fileSize.Text, TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Negative entry in Volume Size\n\n\t" + fileSize.Text, DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 fileSize.Focus();
                 return;
             }
             if (input < 5)
             {
-                if (DialogResult.No == MessageBox.Show("Are you sure you meant this Volume size\n\n\t" + input.ToString() + "MB is really small??", TrueCryptSWObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                if (DialogResult.No == MessageBox.Show("Are you sure you meant this Volume size\n\n\t" + input.ToString() + "MB is really small??", DoTasksObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
                     fileSize.Focus();
                     return;
@@ -65,7 +69,7 @@ namespace TaxAide_TrueCrypt_Utility
             }
             if (fileSize.ForeColor == SystemColors.GrayText)
             {
-                if (DialogResult.No == MessageBox.Show("There has been no entry in the Volume Size Box. Did you intend to use the default of 950 MBytes?", TrueCryptSWObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                if (DialogResult.No == MessageBox.Show("There has been no entry in the Volume Size Box. Did you intend to use the default of 950 MBytes?", DoTasksObj.mbCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
                     fileSize.Focus();
                     return;

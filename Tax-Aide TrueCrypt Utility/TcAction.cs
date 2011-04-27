@@ -34,7 +34,7 @@ namespace TaxAide_TrueCrypt_Utility
                 {
                     Log.WriteStrm.WriteLine(item.cntrlClass + ", " + item.caption);
                 }
-                MessageBox.Show(string.Format("The " + TCWin.mainWinTitle + " Process has displayed an unexpected window.\n Exiting, a log file is located at {0}", Log.logPathFile), TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(string.Format("The " + TCWin.mainWinTitle + " Process has displayed an unexpected window.\n Exiting, a log file is located at {0}", Log.logPathFile), DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);//new window
 
             }
@@ -109,16 +109,16 @@ namespace TaxAide_TrueCrypt_Utility
         }
         protected void RestartExit()    //TC installation
         {
-            MessageBox.Show("TrueCrypt requires a System Restart\rPlease do that and then restart this program", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            MessageBox.Show("TrueCrypt requires a System Restart\rPlease do that and then restart this program", DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Hand);
             Log.WritWTime("System restart required due to TrueCrypt installation or Problem");
             Application.Exit();
         }
         protected void UninstallFail()
         {
-            if (System.IO.File.Exists(TrueCryptSWObj.tcProgramFQN))
+            if (System.IO.File.Exists(DoTasksObj.tcProgramFQN))
             {   // uninstall failed
                 Log.WritWTime("Automated TrueCrypt Uninstall failed");
-                MessageBox.Show("Automated TrueCrypt Uninstall failed.\nPlease uninstall TrueCrypt manually then restart this program", TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Automated TrueCrypt Uninstall failed.\nPlease uninstall TrueCrypt manually then restart this program", DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Application.Exit();
             }
             else

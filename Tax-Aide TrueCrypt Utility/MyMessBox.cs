@@ -20,5 +20,6 @@ namespace TaxAide_TrueCrypt_Utility
         {
             Close();
         }
+
     }
 }

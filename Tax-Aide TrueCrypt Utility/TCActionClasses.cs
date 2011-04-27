@@ -180,7 +180,7 @@ namespace TaxAide_TrueCrypt_Utility
                     return 0;
                 }
                 Log.WriteStrm.WriteLine(DateTime.Now.ToString() + mainWinTitle + " Process has disappeared");
-                MessageBox.Show(string.Format("The " + mainWinTitle + " Process has unexpectedly disappeared.\n A log file is located at {0}", Log.logPathFile), TrueCryptSWObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(string.Format("The " + mainWinTitle + " Process has unexpectedly disappeared.\n A log file is located at {0}", Log.logPathFile), DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(1);
             }
             return 1;
