@@ -98,7 +98,7 @@ namespace TaxAide_TrueCrypt_Utility
             }
             winCtrlList.Add(new WinCtrls { caption = wintxt.ToString(), hCtrl = hWnd, cntrlClass = wintxt1.ToString() });
             //Next line logs all child window data only necessary for debugging
-            //Log.WriteStrm.WriteLine("caption=" + wintxt.ToString() + "hcrtl=" + hWnd.ToString() + "cntrlClass=" + wintxt1.ToString());
+            //Log.WriteStrm.WriteLine("caption= " + wintxt.ToString() + " hcrtl= " + hWnd.ToString("X") + " cntrlClass= " + wintxt1.ToString());
             if (wintxt1.ToString() == "Static")
             {
                 staticText.Append(wintxt.ToString()); 
@@ -261,7 +261,7 @@ namespace TaxAide_TrueCrypt_Utility
         //}
         public string GetDlgCtrl(ref int i)
         {
-            string str = winCtrlList[i].cntrlClass +" "+ ConvertToHex(winCtrlList[i].hCtrl) + winCtrlList[i].caption;
+            string str = winCtrlList[i].cntrlClass +" "+ winCtrlList[i].hCtrl.ToString("X") + winCtrlList[i].caption;
             i += 1;
             if (i==(winCtrlList.Count))
             {
@@ -270,12 +270,6 @@ namespace TaxAide_TrueCrypt_Utility
             return str;
         }
 
-        private string ConvertToHex(IntPtr num)
-        {
-            byte[] mbytes = BitConverter.GetBytes((int)num);
-            Array.Reverse(mbytes);
-            return BitConverter.ToString(mbytes).Replace("-", null);
-        }
  #endregion
 
     }

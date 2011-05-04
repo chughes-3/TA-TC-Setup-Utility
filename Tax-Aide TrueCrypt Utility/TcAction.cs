@@ -72,17 +72,23 @@ namespace TaxAide_TrueCrypt_Utility
         }
 
         protected void EnterText()  //This logic assumes there is only one edit box in the Win and the NEXT button is the same as previous (true for TC)
-        // GetDlgCtrl handle of edit box enter text
+        // GetDlgCtrl handle of edit box enter text Exception is Password which has 2 edit boxes separated by tab processing
         {
             int wCtrLstIndex = tcWin.winCtrlList.FindIndex(delegate(TCWin.WinCtrls w) { return (w.cntrlClass.Equals("Edit")); });
             Win32.SendMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.EM_SETSEL, (IntPtr)0, (IntPtr)(-1)); //selects all existing text
             char[] values = winAction[r].variableText.ToCharArray();
             foreach (char c in values)
             {
-                int scanCode = VKeytoScanCodeCls.Lookup(c);
-                int LParam = Win32.MakeLParam(0x0001, scanCode);
-                int t = Win32.PostMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.WM_CHAR, (IntPtr)Convert.ToInt32(c), (IntPtr)LParam);
-            }   // Next section allows multiple buttons (including radio buttons) to be clicked
+                if (c != '\t')
+                {
+                    int scanCode = VKeytoScanCodeCls.Lookup(c);
+                    int LParam = Win32.MakeLParam(0x0001, scanCode);
+                    int t = Win32.PostMessage(tcWin.winCtrlList[wCtrLstIndex].hCtrl, (int)win32Message.WM_CHAR, (IntPtr)Convert.ToInt32(c), (IntPtr)LParam);
+                }
+                else
+                    wCtrLstIndex += 1; // this is password setup with confirm box immediately after password entry box in window control list
+            }   
+            // Next section allows multiple buttons (including radio buttons) to be clicked
             string[] buttonStrings = winAction[r].captionText.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in buttonStrings)
             {// special processing to convert Next button to enter key to whole window caused by vol loc screen change in TC7.0 (never save history checkbox went from an s to an n same as next
@@ -247,10 +253,11 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="Volume Type",actionToBeDone="ClickButton",captionText="Next",variableText=String.Empty,activeFunction=ClickButton},
             new NextWinAction{uniqueWinText="Volume Size",actionToBeDone="EnterText",captionText="Next",variableText=String.Empty,activeFunction=EnterText},
             new NextWinAction{uniqueWinText="Volume Format",actionToBeDone="ComboSelect",captionText="ComboBox0",variableText="NTFS,Format",activeFunction=ComboSelect},//Selection to be made in Combo Box and button to be pressed to continue
-            new NextWinAction{uniqueWinText="Volume Password",actionToBeDone="Nothing",captionText="",variableText=String.Empty,activeFunction=Nothing},
+            new NextWinAction{uniqueWinText="Volume Password",actionToBeDone="EnterText",captionText="Next",variableText=String.Empty,activeFunction=EnterText},
             new NextWinAction{uniqueWinText="Encryption Options",actionToBeDone="ClickButton",captionText="Next",variableText=String.Empty,activeFunction=ClickButton},
             new NextWinAction{uniqueWinText="Short passwords are easy",actionToBeDone="ClickButton",captionText="Yes",variableText=String.Empty,activeFunction=ClickButton},
             new NextWinAction{uniqueWinText="been successfully created",actionToBeDone="SpecialKey",captionText="OK",variableText="\r",activeFunction=SpecialKey}, //sends enter key
+            new NextWinAction{uniqueWinText="Caps Lock is on",actionToBeDone="SpecialKey",captionText="OK",variableText="\r",activeFunction=SpecialKey}, //sends enter key
             new NextWinAction{uniqueWinText="volume has been created and",actionToBeDone="SpecialKey",captionText="Exit",variableText="\u001B",activeFunction=SpecialKey}, //sends escape key
             new NextWinAction{uniqueWinText="administrator privileges",actionToBeDone="ClickButton",captionText="&No",variableText=String.Empty,activeFunction=ClickButton},
             new NextWinAction{uniqueWinText="NOT ENCRYPT THE FILE, BUT IT WILL DELETE IT",actionToBeDone="Nothing",captionText="",variableText=String.Empty,activeFunction=Nothing},
@@ -258,12 +265,14 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="Large Files",actionToBeDone="ClickButton",captionText="Next",variableText=String.Empty,activeFunction=ClickButton}
             });
         }
-        public void SetEditBoxes(string path, string size)
+        public void SetEditBoxes(string path, string size, string password)
         {
             int i = winActionP.FindIndex(delegate(NextWinAction s) { return s.uniqueWinText.Equals("Volume Location"); });
             winActionP[i].variableText = path;
             i = winActionP.FindIndex(delegate(NextWinAction s) { return s.uniqueWinText.Equals("Volume Size"); });
             winActionP[i].variableText = size;
+            i = winActionP.FindIndex(delegate(NextWinAction s) { return s.uniqueWinText.Equals("Volume Password"); });
+            winActionP[i].variableText = password;
         }
     }
 }

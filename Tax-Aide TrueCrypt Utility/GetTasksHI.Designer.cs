@@ -40,6 +40,7 @@
             this.mBytes = new System.Windows.Forms.RadioButton();
             this.labelGrpBox = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.newVolEQOldVol = new System.Windows.Forms.CheckBox();
             this.labelVolSize = new System.Windows.Forms.Label();
             this.sizeLabel = new System.Windows.Forms.Label();
             this.usbSelectionComboBox = new System.Windows.Forms.ComboBox();
@@ -84,7 +85,7 @@
             // OK
             // 
             this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OK.Location = new System.Drawing.Point(260, 236);
+            this.OK.Location = new System.Drawing.Point(260, 257);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
             this.OK.TabIndex = 5;
@@ -96,7 +97,7 @@
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(53, 236);
+            this.Cancel.Location = new System.Drawing.Point(53, 257);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 4;
@@ -118,7 +119,7 @@
             // 
             this.newFileSizeMB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.newFileSizeMB.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.newFileSizeMB.Location = new System.Drawing.Point(131, 73);
+            this.newFileSizeMB.Location = new System.Drawing.Point(131, 65);
             this.newFileSizeMB.Name = "newFileSizeMB";
             this.newFileSizeMB.Size = new System.Drawing.Size(54, 20);
             this.newFileSizeMB.TabIndex = 6;
@@ -129,7 +130,7 @@
             // gBytes
             // 
             this.gBytes.AutoSize = true;
-            this.gBytes.Location = new System.Drawing.Point(264, 74);
+            this.gBytes.Location = new System.Drawing.Point(264, 66);
             this.gBytes.Name = "gBytes";
             this.gBytes.Size = new System.Drawing.Size(59, 17);
             this.gBytes.TabIndex = 8;
@@ -140,7 +141,7 @@
             // 
             this.mBytes.AutoSize = true;
             this.mBytes.Checked = true;
-            this.mBytes.Location = new System.Drawing.Point(197, 74);
+            this.mBytes.Location = new System.Drawing.Point(197, 66);
             this.mBytes.Name = "mBytes";
             this.mBytes.Size = new System.Drawing.Size(60, 17);
             this.mBytes.TabIndex = 7;
@@ -161,6 +162,7 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.newVolEQOldVol);
             this.groupBox2.Controls.Add(this.labelVolSize);
             this.groupBox2.Controls.Add(this.sizeLabel);
             this.groupBox2.Controls.Add(this.gBytes);
@@ -169,14 +171,26 @@
             this.groupBox2.Controls.Add(this.newFileSizeMB);
             this.groupBox2.Location = new System.Drawing.Point(12, 128);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(382, 104);
+            this.groupBox2.Size = new System.Drawing.Size(382, 125);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
+            // 
+            // newVolEQOldVol
+            // 
+            this.newVolEQOldVol.AutoSize = true;
+            this.newVolEQOldVol.Location = new System.Drawing.Point(77, 96);
+            this.newVolEQOldVol.Name = "newVolEQOldVol";
+            this.newVolEQOldVol.Size = new System.Drawing.Size(249, 17);
+            this.newVolEQOldVol.TabIndex = 12;
+            this.newVolEQOldVol.Text = "Set New Volume Size equal to Old Volume Size";
+            this.newVolEQOldVol.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.newVolEQOldVol.UseVisualStyleBackColor = true;
+            this.newVolEQOldVol.CheckedChanged += new System.EventHandler(this.newVolEQOldVol_CheckedChanged);
             // 
             // labelVolSize
             // 
             this.labelVolSize.AutoSize = true;
-            this.labelVolSize.Location = new System.Drawing.Point(38, 77);
+            this.labelVolSize.Location = new System.Drawing.Point(38, 69);
             this.labelVolSize.Name = "labelVolSize";
             this.labelVolSize.Size = new System.Drawing.Size(90, 13);
             this.labelVolSize.TabIndex = 11;
@@ -185,7 +199,7 @@
             // sizeLabel
             // 
             this.sizeLabel.AutoSize = true;
-            this.sizeLabel.Location = new System.Drawing.Point(7, 45);
+            this.sizeLabel.Location = new System.Drawing.Point(7, 43);
             this.sizeLabel.Name = "sizeLabel";
             this.sizeLabel.Size = new System.Drawing.Size(359, 13);
             this.sizeLabel.TabIndex = 10;
@@ -206,13 +220,13 @@
             this.usbSelectionComboBox.Visible = false;
             this.usbSelectionComboBox.SelectedIndexChanged += new System.EventHandler(this.usbSelectionComboBox_SelectedIndexChanged);
             // 
-            // FileList
+            // GetTasksHI
             // 
             this.AcceptButton = this.OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(406, 274);
+            this.ClientSize = new System.Drawing.Size(406, 295);
             this.Controls.Add(this.usbSelectionComboBox);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.mainLabel);
@@ -222,7 +236,7 @@
             this.Controls.Add(this.taskChoice2);
             this.Controls.Add(this.taskChoice1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FileList";
+            this.Name = "GetTasksHI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AARP Tax-Aide TrueCrypt Utilities";
             this.groupBox2.ResumeLayout(false);
@@ -248,6 +262,7 @@
         private System.Windows.Forms.Label sizeLabel;
         private System.Windows.Forms.Label labelVolSize;
         private System.Windows.Forms.ComboBox usbSelectionComboBox;
+        private System.Windows.Forms.CheckBox newVolEQOldVol;
     }
 }
 

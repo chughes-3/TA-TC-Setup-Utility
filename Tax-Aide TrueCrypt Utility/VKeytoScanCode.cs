@@ -110,8 +110,9 @@ namespace TaxAide_TrueCrypt_Utility
                 vKeyToScanCode.Add('\n', 0x1C);
                 vKeyToScanCode.Add('\r', 0x1C);
                 vKeyToScanCode.Add('\u001B', 0x1);  //Escape key
-                vKeyToScanCode.Add('(', 0x0A); 
-       }
+                vKeyToScanCode.Add('(', 0x0A);
+                vKeyToScanCode.Add('\t', 0x0F);
+            }
 #endregion
         public static int Lookup(char c)
         {

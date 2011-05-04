@@ -117,12 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Message.Text" xml:space="preserve">
-    <value>We will now copy the contents of the old TrueCrypt Volume to the New TrueCrypt Volume.
-You will be asked first for the password to the new Truecrypt Volume and then the password 
-for the old TrueCrypt Volume. Then the contents of the old volume will be copied to
-the new Volume. If there are 2 old volumes the program will then go on to ask you for
-the password to the second old volume so that copying can be done"</value>
+  <data name="delInitialExplain.Text" xml:space="preserve">
+    <value>A TrueCrypt TPDATA file (the P drive) exists on the Hard Drive.
+ In addition an old TrueCrypt TPDATA file exists on the Hard Drive.
+This looks like a failed migration of user data from old Hard Drive 
+based Truecrypt files to a new Hard Drive TrueCrypt file.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

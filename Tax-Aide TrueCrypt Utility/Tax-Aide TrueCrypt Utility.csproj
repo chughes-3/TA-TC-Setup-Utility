@@ -12,6 +12,8 @@
     <AssemblyName>Tax-Aide TrueCrypt Utility</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationIcon>AARPLookAlike.ico</ApplicationIcon>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,10 +26,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <ApplicationIcon>AARPLookAlike.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,6 +67,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoTasksTCFileObjs.cs" />
+    <Compile Include="migrationFileAction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="migrationFileAction.designer.cs">
+      <DependentUpon>migrationFileAction.cs</DependentUpon>
+    </Compile>
     <Compile Include="PasswordCollection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,12 +90,6 @@
     </Compile>
     <Compile Include="hdTCSize.Designer.cs">
       <DependentUpon>hdTCSize.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MyMessBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MyMessBox.Designer.cs">
-      <DependentUpon>MyMessBox.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgessOverall.cs">
       <SubType>Form</SubType>
@@ -124,7 +124,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Embedded\Start Traveler.bat" />
-    <EmbeddedResource Include="Embedded\Tax-AideDelete.bat" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -145,7 +144,6 @@
     <EmbeddedResource Include="Embedded\autorun.inf" />
     <EmbeddedResource Include="Embedded\decryption.ico" />
     <EmbeddedResource Include="Embedded\encryption.ico" />
-    <EmbeddedResource Include="Embedded\favicon.ico" />
     <EmbeddedResource Include="hdTCSize.resx">
       <DependentUpon>hdTCSize.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -156,6 +154,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -171,6 +174,11 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
       <ProductName>Windows Installer 3.1</ProductName>
@@ -181,17 +189,14 @@
     <EmbeddedResource Include="Embedded\Stop_Tax-Aide_Drive.exe" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MyMessBox.resx">
-      <DependentUpon>MyMessBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="..\..\StartTA_TCFile\StartTA_TCFile\bin\Debug\Start_Tax-Aide_Drive.exe">
+      <Link>Embedded\Start_Tax-Aide_Drive.exe</Link>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Embedded\Start_Tax-Aide_Drive.exe" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="AARPLookAlike.ico" />
     <EmbeddedResource Include="Embedded\TrueCrypt Setup 7.0a.exe" />
+    <EmbeddedResource Include="migrationFileAction.resx">
+      <DependentUpon>migrationFileAction.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PasswordCollection.resx">
       <DependentUpon>PasswordCollection.cs</DependentUpon>
     </EmbeddedResource>

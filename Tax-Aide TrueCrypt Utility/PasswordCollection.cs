@@ -9,10 +9,11 @@ namespace TaxAide_TrueCrypt_Utility
 {
     public partial class PasswordCollectForm : Form
     {
-        public PasswordCollectForm(TasksBitField tasklist, bool tsdataExists)
+        public PasswordCollectForm(TasksBitField tasklist, bool oldTravExists, bool oldHDExists, bool tsdataExists)
         {
             InitializeComponent();
             // setup form panels and size for passwords needed
+            this.ActiveControl = this.passHDnewP;
             if(!tasklist.TestTrav())
             {// No traveler
                 this.Height -= panelTrav.Height;  //HD only no traveler
@@ -22,15 +23,16 @@ namespace TaxAide_TrueCrypt_Utility
             {//Traveler only no hard drive
                 this.Controls.Remove(panelHD); 
                 this.Height -= panelHD.Height;
+                this.ActiveControl = this.passTravNewP;
             }
-            if (tasklist.TestTrav() && !tasklist.IsOn(TasksBitField.Flag.travTcfileOldCopy))
+            if (tasklist.TestTrav() && !(tasklist.IsOn(TasksBitField.Flag.travTcfileOldCopy)|| oldTravExists))
             {// we have NO old Trav file therefore no old P
                 this.panelTrav.Controls.Remove(panelTravOldP);
                 this.panelTrav.Height -= panelTravOldP.Height;
                 this.panelTrav.Top += panelTravOldP.Height;
                 this.Height -= panelTravOldP.Height;
             }
-            if (tasklist.TestHD() && !tasklist.IsOn(TasksBitField.Flag.hdTcfileOldRename))
+            if (tasklist.TestHD() && !(tasklist.IsOn(TasksBitField.Flag.hdTcfileOldRename) || oldHDExists))
             {// we have NO old HD files therefore no old P,S
             this.panelHD.Controls.Remove(panelHDoldP); //no HD old p ie just create new P
             this.Height -= panelHDoldP.Height;
@@ -78,8 +80,23 @@ namespace TaxAide_TrueCrypt_Utility
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            //Store entered passwords in appropriate objects
-            return;
+            if (this.Contains(passHDnewP) && (passHDnewP.Text != passHDnewPConfirm.Text))
+            {//We have an error unequal passwords
+                checkBoxHDnewP.Checked = true;
+                passHDnewP.BackColor = Color.Yellow;
+                passHDnewPConfirm.BackColor = Color.Yellow;
+                passHDnewP.Focus();
+                return;
+            }
+            if (this.Contains(passTravNewP) && (passTravNewP.Text != passTravNewPConfirm.Text))
+            {
+                checkBoxTravnewP.Checked = true;
+                passTravNewP.BackColor = Color.Yellow;
+                passTravNewPConfirm.BackColor = Color.Yellow;
+                passTravNewP.Focus();
+                return; 
+            }
+            this.DialogResult = DialogResult.OK;
         }
     }
 }
