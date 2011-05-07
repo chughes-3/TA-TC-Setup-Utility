@@ -18,6 +18,7 @@ namespace TaxAide_TrueCrypt_Utility
     {
         readonly string tcSetupProgramName = "TrueCrypt Setup 7.0a.exe";    //  Checks for upgrades done in FileList.CHeck4Hostupgrade & FileList.checkTravSwExists these are strings MUST change when change the release of TC
         public static readonly string tcSetupVersion = "7.0"; // this is version below which TC software upgrade on trav of hd will happen
+        public const string taTcUtilVersion = "0.40.7.0"; //this is version below which force a script upgrade - primarily a traveler issue DO NOT set this above level of currect software or problmes
         internal static readonly string tcDataUpgrade = "6.2"; //version below which we force a data file copy during upgrade
         public static readonly string tcDriveLetter = "P:";  //used to open drives to copy old to new
         internal static readonly string programName = "Tax-Aide TrueCrypt Utility.exe"; //used when copy this program to install directory
@@ -489,7 +490,7 @@ namespace TaxAide_TrueCrypt_Utility
             	} 
         }
         //Function to remove Taxaide files from desktop and TrueCrypt Program directories
-        private void RemoveOldTaxAideFiles()
+        private void RemoveOldTaxAideFiles() //for Desktop
         {
             string desktopFolder;
             if (osVer < 6)
@@ -548,7 +549,7 @@ namespace TaxAide_TrueCrypt_Utility
             }
             Log.WritWTime("Count of TaxAide script files removed from Hard Drive = " + files.Count.ToString());
         }
-        private void RemoveTravelerTCFiles(string path)
+        private void RemoveTravelerTCFiles(string path) //for Traveler
         {
             List<string> files = new List<string>();
             try
@@ -581,6 +582,7 @@ namespace TaxAide_TrueCrypt_Utility
                 DeleteFilesInDir(path);
                 File.Delete(path.Substring(0, 3) + "autorun.inf");
                 File.Delete(path.Substring(0, 3) + "Start Traveler.bat");
+                File.Delete(path.Substring(0, 3) + "Start Traveler.exe");
             }
         }
         private void CopyTAFilesFromThisAssembly(string destDir)
@@ -598,7 +600,7 @@ namespace TaxAide_TrueCrypt_Utility
             {
                 Log.WritWTime("Copying unique traveler files from Assembly to Drive");
                 CopyFileFromThisAssembly("autorun.inf", destDir.Substring(0, 3));
-                CopyFileFromThisAssembly("Start Traveler.bat", destDir.Substring(0, 3));
+                CopyFileFromThisAssembly("Start Traveler.exe", destDir.Substring(0, 3));
             }
             else
             {
@@ -620,21 +622,23 @@ namespace TaxAide_TrueCrypt_Utility
         }
         private void CopyFileFromThisAssembly(string filename, string destPath) 
         {
-            //create a buffer
-            byte[] dataBuffer = new byte[2048];
-            int n = 2048;
+            //create a buffer originally had 2k but 64k speeded things up
+            byte[] dataBuffer = new byte[0x10000];
+            int n = 0x10000;
             try
             {
                 using (Stream fsSource = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("TaxAide_TrueCrypt_Utility.Embedded." + filename))
                 {
                     using (FileStream fsNew = new FileStream(destPath + "\\" + filename, FileMode.Create, FileAccess.Write))
                     {
+                        BinaryReader fsSourceBin = new BinaryReader(fsSource);
+                        BinaryWriter fsNewBin = new BinaryWriter(fsNew);
                         while (n > 0)
                         {
-                            n = fsSource.Read(dataBuffer, 0, 2048);
-                            fsNew.Write(dataBuffer, 0, n);
+                            n = fsSourceBin.Read(dataBuffer, 0, 0x10000);
+                            fsNewBin.Write(dataBuffer, 0, n);
                         }
-                        fsNew.Flush();// I would have thought using fixed this but one error on xp was fixed by this.
+                        fsNewBin.Flush();// I would have thought using fixed this but one error on xp was fixed by this.
                     }
                 }
             }

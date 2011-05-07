@@ -323,6 +323,10 @@ namespace TaxAide_TrueCrypt_Utility
                             return;
                         }
                         // we only get here if no traveler files exist on 2 usb drives but traveler sw may so check
+                        if (tasklist1.IsOn(TasksBitField.Flag.travTASwOldDelete))
+                        {//we do not have a tpdata but do have old sw setup delete old sw path
+                            tcFileTravOldLoc.FileNamePath = travUSBDrv[(int)taskChoice2.Tag].drvName + "\\";
+                        }
                         checkTravSwExists(drv); // that should get the correct task flags set
                         if (DoTasksObj.tCryptRegEntry == null)
                         {// nothing on host so must setup fqn for traveler
@@ -472,14 +476,17 @@ namespace TaxAide_TrueCrypt_Utility
             if (Directory.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler"))
             {   //existence of this directory means at 6.2 plus
                 string travVer = "";
+                string travVerTA = "";
                 if (File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe"))
                 {
                     travVer = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe").FileVersion;
+                    travVerTA = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\Tax-Aide TrueCrypt Utility.exe").FileVersion;
                 }
-                if (!File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe") || string.Compare(travVer, DoTasksObj.tcSetupVersion) < 0) //caters to directory existing but no files in it or being at less than current release
+                Log.WritWTime(String.Format("travVer/Truecrypt = {0}, travVerTa = {1}",travVer,travVerTA));
+                if (!File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe") || string.Compare(travVer, DoTasksObj.tcSetupVersion) < 0 || string.Compare(travVerTA,DoTasksObj.taTcUtilVersion) < 0 ) //caters to directory existing but no files in it or being at less than current release
                 {
                     tasklist1.SetFlag(TasksBitField.Flag.travTASwOldDelete);
-                    tasklist1.SetFlag(TasksBitField.Flag.travTASwOldIsver6_2);
+                    tasklist1.SetFlag(TasksBitField.Flag.travTASwOldIsver6_2);//Flag set to say>6.2 therfore NO data upgrade forced
                     tasklist1.SetFlag(TasksBitField.Flag.travSwInstall);
                     //file format not set because no forced data upgrade in this section
                     Log.WriteStrm.WriteLine("FileList Traveler TrueCrypt to be upgraded from version " + travVer);

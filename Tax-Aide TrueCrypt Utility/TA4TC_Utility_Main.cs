@@ -77,7 +77,7 @@ namespace TaxAide_TrueCrypt_Utility
             Log.WritSection(string.Format("TaskList = 0x{0:X}", tasklist.taskList));
             tasklist.LogTasks();
             //Next  TC software object does tasklist
-            Environment.Exit(1);  //used to stop program here at the point where can examine Log but before and changes are done
+            //Environment.Exit(1);  //used to stop program here at the point where can examine Log but before and changes are done
             TcSoftware.DoTasks(tasklist,tcFileHDOld,tcFileTravOld);
         }
     }

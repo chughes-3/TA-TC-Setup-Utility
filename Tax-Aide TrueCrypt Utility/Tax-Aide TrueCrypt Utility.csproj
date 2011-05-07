@@ -123,7 +123,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Embedded\Start Traveler.bat" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -186,11 +185,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Embedded\Stop_Tax-Aide_Drive.exe" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="..\..\StartTA_TCFile\StartTA_TCFile\bin\Debug\Start_Tax-Aide_Drive.exe">
       <Link>Embedded\Start_Tax-Aide_Drive.exe</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Stop_Tax-Aide_Drive\Stop_Tax-Aide_Drive\bin\Debug\Stop_Tax-Aide_Drive.exe">
+      <Link>Embedded\Stop_Tax-Aide_Drive.exe</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Start Traveler\Start Traveler\bin\Debug\Start Traveler.exe">
+      <Link>Embedded\Start Traveler.exe</Link>
     </EmbeddedResource>
     <Content Include="AARPLookAlike.ico" />
     <EmbeddedResource Include="Embedded\TrueCrypt Setup 7.0a.exe" />
