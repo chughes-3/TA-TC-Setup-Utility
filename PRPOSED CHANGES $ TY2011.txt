@@ -1,0 +1,2 @@
+Redo autoit scripts
+CAPS LOCK PERMANENTLY ON
