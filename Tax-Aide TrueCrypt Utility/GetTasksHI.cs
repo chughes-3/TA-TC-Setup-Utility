@@ -338,6 +338,10 @@ namespace TaxAide_TrueCrypt_Utility
                 else
                 {
                     Log.WritSection("We Have a problem with radio button selection");
+                    Log.WritWTime("Error info as we die >> Old Paths = " + tcFileTravOldLoc.FileNamePath + " & " + tcFileHDOldLoc.FileNamePath);
+                    Log.WritWTime("HD Size = " + TrueCryptFilesNew.tcFileHDNewSize + "MB, Trav Size = " + TrueCryptFilesNew.tcFileTravNewSize + "MB");
+                    MessageBox.Show("We have a fatal error");
+                    Environment.Exit(1);
                 }
             }
             //MessageBox.Show(selectedFilePath);
@@ -663,13 +667,25 @@ namespace TaxAide_TrueCrypt_Utility
 
         private void Check4FailedMigrationHD()
         {
-            if (File.Exists(TrueCryptFilesNew.tcFileHDNewPath) && File.Exists(tcFileHDOldLoc.FileNamePath.Substring(0, tcFileHDOldLoc.FileNamePath.LastIndexOf("\\") + 1) + "oldtpdata.tc"))
+            string regKeyMigrationHD = (string)Microsoft.Win32.Registry.GetValue(DoTasksObj.regKeyName, "TFTAOld", ""); //get this here in case started with old file existing from previous run of utility
+            string tcMigFilePath =  Environment.GetEnvironmentVariable("HOMEDRIVE") + "\\"  + "oldtpdata.tc";
+            MessageBox.Show(tcMigFilePath);
+            if (DoTasksObj.osVer == 6)
             {
+                string tcMigFilePath1 = Environment.GetEnvironmentVariable("PUBLIC") + "\\" + "oldtpdata.tc";
+                if (!File.Exists(tcMigFilePath1) && File.Exists(tcMigFilePath))
+                {//deals with case of v/W7 and oldtpdata exists at c root rather than public
+                    tcMigFilePath1 = tcMigFilePath;
+                }
+                tcMigFilePath = tcMigFilePath1;  //sets up public as path for V/W7 unless old exists in root
+            }
+            MessageBox.Show(tcMigFilePath+"    "+TrueCryptFilesNew.tcFileHDNewPath);
+            if (File.Exists(TrueCryptFilesNew.tcFileHDNewPath) && (File.Exists(tcMigFilePath)))
+            {// we have old and new files existing therefore maybe failed migration
                 migrationFileActionForm migUserQuestion = new migrationFileActionForm();
                 DialogResult diaResult = migUserQuestion.ShowDialog();
                 if (diaResult == DialogResult.Yes) //delete old tc files HD
                 {
-                    string regKeyMigrationHD = (string)Microsoft.Win32.Registry.GetValue(DoTasksObj.regKeyName, "TFTAOld", ""); //get this here in case started with old file existing from previous run of utility
                     if (regKeyMigrationHD != "")
                     {
                         string[] oldFilePaths = regKeyMigrationHD.Split(new char[] { ',' });
@@ -682,8 +698,8 @@ namespace TaxAide_TrueCrypt_Utility
                     }
                     else
                     {
-                        File.Delete(tcFileHDOldLoc.FileNamePath.Substring(0, tcFileHDOldLoc.FileNamePath.LastIndexOf("\\") + 1) + "oldtpdata.tc");
-                        File.Delete(tcFileHDOldLoc.FileNamePath.Substring(0, tcFileHDOldLoc.FileNamePath.LastIndexOf("\\") + 1) + "oldtsdata.tc");
+                        File.Delete(tcMigFilePath);
+                        File.Delete(tcMigFilePath.Substring(0, tcMigFilePath.LastIndexOf("\\") + 1) + "oldtsdata.tc");
                     }
                     return; //continue with utility
                 }
@@ -694,9 +710,25 @@ namespace TaxAide_TrueCrypt_Utility
                     return;
                 }
             }
+            else
+            {
+                if (regKeyMigrationHD != "" && !File.Exists(tcMigFilePath))
+                {//We have reg key set but no old file
+                    DialogResult mbResult = MessageBox.Show("There is a migration data flag set, but no old Hard Drive TPDATA file, \r\nDelete the Migration Flag?", DoTasksObj.mbCaption, MessageBoxButtons.OKCancel, MessageBoxIcon.Error); //Delete reg entries and return on OK, exit on cancel
+                    if (mbResult == DialogResult.OK)
+                    {
+                        DeleteMigrationRegEntries(false);
+                        return;
+                    }
+                    else
+                        Environment.Exit(1);
+                }
+            }
         }
+
         private void Check4FailedMigrationTrav(int index2travUSBdrv)
         {//travdrv has tpdata on it. check for migration file on hd Use new HD location to find if old traveler file
+            string regKeyMigrationTrav = (string)Microsoft.Win32.Registry.GetValue(DoTasksObj.regKeyName, "TFTATravOld", "");
             if (File.Exists(TrueCryptFilesNew.tcFileHDNewPath.Substring(0, TrueCryptFilesNew.tcFileHDNewPath.LastIndexOf("\\") + 1) + "oldtravtpdata.tc"))
             {
                 migrationFileActionForm migUserQuestion = new migrationFileActionForm();
@@ -708,7 +740,6 @@ namespace TaxAide_TrueCrypt_Utility
                 DialogResult diaResult = migUserQuestion.ShowDialog();
                 if (diaResult == DialogResult.Yes) //delete old tc file Trav
                 {
-                    string regKeyMigrationTrav = (string)Microsoft.Win32.Registry.GetValue(DoTasksObj.regKeyName, "TFTATravOld", "");
                     if (regKeyMigrationTrav != "")
                     {
                         File.Delete(regKeyMigrationTrav);
@@ -727,7 +758,34 @@ namespace TaxAide_TrueCrypt_Utility
                     return;
                 }
             }
+            else
+            {//no old traveler check if reg key exists
+                if (regKeyMigrationTrav != "")
+                {// we have reg key no old travler
+                    DialogResult mbResult = MessageBox.Show("There is a migration data flag set, but no old Traveler TPDATA file, \r\nDelete the Traveler Migration Flag?", DoTasksObj.mbCaption, MessageBoxButtons.OKCancel, MessageBoxIcon.Error); //Delete reg entries and return on OK, exit on cancel
+                    if (mbResult == DialogResult.OK)
+                    {
+                        DeleteMigrationRegEntries(true);
+                        return;
+                    }
+                    else
+                        Environment.Exit(1);
+                }
+            }
         }
+        private void DeleteMigrationRegEntries(Boolean removable)
+        {
+            Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(DoTasksObj.regsubKeyName);
+            if (removable == false)
+            {
+                rk.DeleteValue("TFTAOld");
+            }
+            else
+            {
+                rk.DeleteValue("TFTATravOld");
+            }
+        }
+
         private void Edit_Entry(object sender, EventArgs e) //ystem.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, S
         {
             newFileSizeMB.Font = new Font(this.Font, FontStyle.Regular);

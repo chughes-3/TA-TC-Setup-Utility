@@ -117,7 +117,7 @@ namespace TaxAide_TrueCrypt_Utility
         {
             MessageBox.Show("TrueCrypt requires a System Restart\rPlease do that and then restart this program", DoTasksObj.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Hand);
             Log.WritWTime("System restart required due to TrueCrypt installation or Problem");
-            Application.Exit();
+            Environment.Exit(1);
         }
         protected void UninstallFail()
         {
@@ -194,7 +194,8 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="successfully updated",actionToBeDone="SpecialKey",captionText="OK",variableText="\r",activeFunction=SpecialKey},
             new NextWinAction{uniqueWinText="never used TrueCrypt before",actionToBeDone="ClickButton",captionText="&No",variableText=String.Empty,activeFunction=ClickButton},
             new NextWinAction{uniqueWinText="computer must be restarted",actionToBeDone="RestartExit",captionText="",variableText=String.Empty,activeFunction=RestartExit},
-            new NextWinAction{uniqueWinText="system cannot find the file specified",actionToBeDone="RestartExit",captionText="",variableText=String.Empty,activeFunction=RestartExit}         
+            new NextWinAction{uniqueWinText="system cannot find the file specified",actionToBeDone="RestartExit",captionText="",variableText=String.Empty,activeFunction=RestartExit}, 
+            new NextWinAction{uniqueWinText="device driver has failed",actionToBeDone="RestartExit",captionText="",variableText=String.Empty,activeFunction=RestartExit}         
             });
         }
     }
