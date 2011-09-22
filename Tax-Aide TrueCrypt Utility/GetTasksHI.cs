@@ -669,7 +669,6 @@ namespace TaxAide_TrueCrypt_Utility
         {
             string regKeyMigrationHD = (string)Microsoft.Win32.Registry.GetValue(DoTasksObj.regKeyName, "TFTAOld", ""); //get this here in case started with old file existing from previous run of utility
             string tcMigFilePath =  Environment.GetEnvironmentVariable("HOMEDRIVE") + "\\"  + "oldtpdata.tc";
-            MessageBox.Show(tcMigFilePath);
             if (DoTasksObj.osVer == 6)
             {
                 string tcMigFilePath1 = Environment.GetEnvironmentVariable("PUBLIC") + "\\" + "oldtpdata.tc";
@@ -679,7 +678,6 @@ namespace TaxAide_TrueCrypt_Utility
                 }
                 tcMigFilePath = tcMigFilePath1;  //sets up public as path for V/W7 unless old exists in root
             }
-            MessageBox.Show(tcMigFilePath+"    "+TrueCryptFilesNew.tcFileHDNewPath);
             if (File.Exists(TrueCryptFilesNew.tcFileHDNewPath) && (File.Exists(tcMigFilePath)))
             {// we have old and new files existing therefore maybe failed migration
                 migrationFileActionForm migUserQuestion = new migrationFileActionForm();
