@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TaxAide_TrueCrypt_Utility.Properties {
+namespace StartTA_TCFile.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

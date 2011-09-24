@@ -5,15 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1DAABE28-4D57-4221-A3B5-4F90CC613B14}</ProjectGuid>
+    <ProjectGuid>{DB9D50AA-7B3F-4CD7-BDEE-9B83F8815456}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TaxAide_TrueCrypt_Utility</RootNamespace>
-    <AssemblyName>Tax-Aide TrueCrypt Utility</AssemblyName>
+    <RootNamespace>StartTA_TCFile</RootNamespace>
+    <AssemblyName>Start_Tax-Aide_Drive</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>AARPLookAlike.ico</ApplicationIcon>
+    <ApplicationIcon>encryption.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -31,6 +30,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -39,7 +39,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;StartTADrive</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -52,13 +52,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Management" />
-    <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions">
@@ -67,56 +62,22 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DoTasksTCFileObjs.cs" />
+    <Compile Include="ProgramDataandTCSoftware.cs" />
     <Compile Include="migrationFileAction.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="migrationFileAction.designer.cs">
+    <Compile Include="migrationFileAction.Designer.cs">
       <DependentUpon>migrationFileAction.cs</DependentUpon>
     </Compile>
-    <Compile Include="PasswordCollection.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PasswordCollection.designer.cs">
-      <DependentUpon>PasswordCollection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GetTasksHI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GetTasksHI.Designer.cs">
-      <DependentUpon>GetTasksHI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="hdTCSize.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="hdTCSize.Designer.cs">
-      <DependentUpon>hdTCSize.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgessOverall.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgessOverall.Designer.cs">
-      <DependentUpon>ProgessOverall.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TA4TC_Utility_Main.cs" />
-    <Compile Include="ProgressForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgressForm.Designer.cs">
-      <DependentUpon>ProgressForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="StartTAMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GetTasksHI.resx">
-      <DependentUpon>GetTasksHI.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgressForm.resx">
-      <DependentUpon>ProgressForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="migrationFileAction.resx">
+      <DependentUpon>migrationFileAction.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -138,24 +99,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ShellLink.cs" />
-    <Compile Include="Tasks.cs" />
-    <Compile Include="TcAction.cs" />
-    <Compile Include="TCActionClasses.cs" />
-    <Compile Include="VKeytoScanCode.cs" />
-    <Compile Include="Win32dllClass.cs" />
+    <Compile Include="TC_Data_File.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Embedded\autorun.inf" />
-    <EmbeddedResource Include="Embedded\decryption.ico" />
-    <EmbeddedResource Include="Embedded\encryption.ico" />
-    <EmbeddedResource Include="hdTCSize.resx">
-      <DependentUpon>hdTCSize.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgessOverall.resx">
-      <DependentUpon>ProgessOverall.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <Content Include="AARPLookAlike.ico" />
+    <Content Include="encryption.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -163,50 +111,16 @@
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
+      <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\Start Traveler\bin\Debug\Start Traveler.exe">
-      <Link>Embedded\Start Traveler.exe</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\StartTA_TCFile\bin\Debug\Start_Tax-Aide_Drive.exe">
-      <Link>Embedded\Start_Tax-Aide_Drive.exe</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Stop_Tax-Aide_Drive\bin\Debug\Stop_Tax-Aide_Drive.exe">
-      <Link>Embedded\Stop_Tax-Aide_Drive.exe</Link>
-    </EmbeddedResource>
-    <Content Include="AARPLookAlike.ico" />
-    <EmbeddedResource Include="Embedded\TrueCrypt Setup 7.0a.exe" />
-    <EmbeddedResource Include="migrationFileAction.resx">
-      <DependentUpon>migrationFileAction.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PasswordCollection.resx">
-      <DependentUpon>PasswordCollection.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

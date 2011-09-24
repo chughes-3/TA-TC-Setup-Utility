@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Tax-Aide TrueCrypt Utility TY11")]
-[assembly: AssemblyDescription("Utility to Install and Maintain Tax-Aide Volumes")]
+[assembly: AssemblyTitle("Stop_Tax-Aide_Drive")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("AARP Tax-Aide")]
-[assembly: AssemblyProduct("Tax-Aide TrueCrypt Utility")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("Stop_Tax-Aide_Drive")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("bb8ab38a-6a3f-4a79-9c6b-0caa98284df9")]
+[assembly: Guid("7d00176c-720f-41ac-8957-456260efdd21")]
 
 // Version information for an assembly consists of the following four values:
 //
