@@ -39,7 +39,7 @@ namespace Stop_Tax_Aide_Drive
             tcproc.WaitForExit();
             if (tcproc.ExitCode != 0)
             {
-                MessageBox.Show("Drive Closing failed in some way, Exiting", thisProginst.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Drive Closing failed in some way, Exiting", thisProginst.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                 Environment.Exit(1);
             }
         }
@@ -59,9 +59,9 @@ namespace Stop_Tax_Aide_Drive
         {
             File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\Stop Traveler.lnk");
             if (!File.Exists(tCryptDriveName))
-                MessageBox.Show("Tax-Aide P drive closed and any network shares removed", thisProginst.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show("Tax-Aide P drive closed and any network shares removed", thisProginst.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
             else
-                MessageBox.Show("Drive Closing failed in some way\r\n     Exiting", thisProginst.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Drive Closing failed in some way\r\n     Exiting", thisProginst.mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
         }
     }
 }

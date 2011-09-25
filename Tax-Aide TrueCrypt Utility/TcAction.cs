@@ -194,6 +194,7 @@ namespace TaxAide_TrueCrypt_Utility
             new NextWinAction{uniqueWinText="successfully updated",actionToBeDone="SpecialKey",captionText="OK",variableText="\r",activeFunction=SpecialKey},
             new NextWinAction{uniqueWinText="never used TrueCrypt before",actionToBeDone="ClickButton",captionText="&No",variableText=String.Empty,activeFunction=ClickButton},
             new NextWinAction{uniqueWinText="computer must be restarted",actionToBeDone="RestartExit",captionText="",variableText=String.Empty,activeFunction=RestartExit},
+            new NextWinAction{uniqueWinText="service has been marked for deletion" ,actionToBeDone="RestartExit" ,captionText="",variableText=String.Empty,activeFunction=RestartExit},
             new NextWinAction{uniqueWinText="system cannot find the file specified",actionToBeDone="RestartExit",captionText="",variableText=String.Empty,activeFunction=RestartExit}, 
             new NextWinAction{uniqueWinText="device driver has failed",actionToBeDone="RestartExit",captionText="",variableText=String.Empty,activeFunction=RestartExit}         
             });

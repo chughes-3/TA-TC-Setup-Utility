@@ -5,7 +5,7 @@ using StartTA_TCFile;
 
 namespace Stop_Tax_Aide_Drive
 {
-    class Program
+    class StopTAMain
     {
         static void Main()
         {

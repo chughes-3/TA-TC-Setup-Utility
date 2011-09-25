@@ -484,7 +484,14 @@ namespace TaxAide_TrueCrypt_Utility
                 if (File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe"))
                 {
                     travVer = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe").FileVersion;
-                    travVerTA = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\Tax-Aide TrueCrypt Utility.exe").FileVersion;
+                    if (File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\Tax-Aide TrueCrypt Utility.exe"))
+                    {
+                        travVerTA = FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\Tax-Aide TrueCrypt Utility.exe").FileVersion;
+                    } 
+                    else
+                    {
+                        travVerTA = "6.3";  //old scripted 6.3 release did not have this file in directory
+                    }
                 }
                 Log.WritWTime(String.Format("travVer/Truecrypt = {0}, travVerTa = {1}",travVer,travVerTA));
                 if (!File.Exists(drv.Substring(0, 2) + "\\Tax-Aide_Traveler\\TrueCrypt.exe") || string.Compare(travVer, DoTasksObj.tcSetupVersion) < 0 || string.Compare(travVerTA,DoTasksObj.taTcUtilVersion) < 0 ) //caters to directory existing but no files in it or being at less than current release
@@ -493,7 +500,7 @@ namespace TaxAide_TrueCrypt_Utility
                     tasklist1.SetFlag(TasksBitField.Flag.travTASwOldIsver6_2);//Flag set to say>6.2 therfore NO data upgrade forced
                     tasklist1.SetFlag(TasksBitField.Flag.travSwInstall);
                     //file format not set because no forced data upgrade in this section
-                    Log.WriteStrm.WriteLine("FileList Traveler TrueCrypt to be upgraded from version " + travVer);
+                    Log.WriteStrm.WriteLine("Traveler TrueCrypt to be upgraded from version " + travVer);
                 }
             }
             else
@@ -501,18 +508,10 @@ namespace TaxAide_TrueCrypt_Utility
                 if (File.Exists(drv + "\\truecrypt.exe"))
                 {
                     tasklist1.SetFlag(TasksBitField.Flag.travTASwOldDelete);
-                }
-                tasklist1.SetFlag(TasksBitField.Flag.travSwInstall);
-                tasklist1.SetFlag(TasksBitField.Flag.travtcFileFormat);
-                Log.WriteStrm.Write("FileList Traveler TrueCrypt to be upgraded/installed ");
-                if (File.Exists(drv + "\\TrueCrypt.exe"))
-                {
                     Log.WriteStrm.WriteLine("from version " + FileVersionInfo.GetVersionInfo(drv.Substring(0, 2) + "\\TrueCrypt.exe").FileVersion);
                 }
-                else
-                {
-                    Log.WriteStrm.WriteLine("");
-                }
+                tasklist1.SetFlag(TasksBitField.Flag.travSwInstall);
+                Log.WriteStrm.Write("Traveler TrueCrypt to be upgraded/installed ");
             }
         }
         internal void Check4HostUpgrade() //called in this file and from program.cs for called from startTaxAideDrive

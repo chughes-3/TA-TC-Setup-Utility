@@ -18,7 +18,7 @@ namespace StartTA_TCFile
             tcData.OpenTcFile();
             tcData.PDrivePerms();
             tcData.SharePDrive();
-            MessageBox.Show("Drive " + TC_Data_File.tCryptDriveLetter + " is mounted and shared as " + TC_Data_File.shareName + "\rIf on a network the Workstations can be started now",thisProg.mbCaption,MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("Drive " + TC_Data_File.tCryptDriveLetter + " is mounted and shared as " + TC_Data_File.shareName + "\rIf on a network the Workstations can be started now",thisProg.mbCaption,MessageBoxButtons.OK,MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
         }
     }
 }

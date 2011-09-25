@@ -18,7 +18,7 @@ namespace TaxAide_TrueCrypt_Utility
     {
         readonly string tcSetupProgramName = "TrueCrypt Setup 7.0a.exe";    //  Checks for upgrades done in FileList.CHeck4Hostupgrade & FileList.checkTravSwExists these are strings MUST change when change the release of TC
         public static readonly string tcSetupVersion = "7.0"; // this is version below which TC software upgrade on trav of hd will happen
-        public const string taTcUtilVersion = "0.40.7.0"; //this is version below which force a script upgrade - primarily a traveler issue DO NOT set this above level of currect software or problmes
+        public const string taTcUtilVersion = "0.42.7.0"; //this is version below which force a script upgrade - primarily a traveler issue DO NOT set this above level of currect software or problmes
         internal static readonly string tcDataUpgrade = "6.2"; //version below which we force a data file copy during upgrade
         public static readonly string tcDriveLetter = "P:";  //used to open drives to copy old to new
         internal static readonly string programName = "Tax-Aide TrueCrypt Utility.exe"; //used when copy this program to install directory
@@ -154,7 +154,7 @@ namespace TaxAide_TrueCrypt_Utility
                 }
                 if (proc1.ExitCode != 0)
                 {
-                    MessageBox.Show(" TrueCrypt Drive Closing failed in some way before uninstall\nPlease close the TrueCrypt Drives manually and restart\n   Exiting", mbCaption,MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    MessageBox.Show(" TrueCrypt Drive Closing failed in some way before uninstall\nPlease close the TrueCrypt Drives manually and restart\n   Exiting", mbCaption,MessageBoxButtons.OK,MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                     Application.Exit();
                 }
                 Log.WritSection("Uninstalling Hard Drive TrueCrypt Version " + FileVersionInfo.GetVersionInfo(tcProgramFQN).FileVersion);
@@ -419,7 +419,7 @@ namespace TaxAide_TrueCrypt_Utility
             }
             progressThread.Abort();//close down status window
             Log.WritSection("Successfully Completed TaskList");
-            MessageBox.Show("Tasks Successfully Completed", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Tasks Successfully Completed", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
         }
 
         // Function to  setup and run TC install, uninstall on hard drive
@@ -436,7 +436,7 @@ namespace TaxAide_TrueCrypt_Utility
             catch (Exception e)
             {
                 Log.WritWTime("Problem starting " + uninTxt + ", exception =" + e.Message.ToString());
-                MessageBox.Show("Problem starting " + uninTxt + ", exception =" + e.Message.ToString(),mbCaption,MessageBoxButtons.OK,MessageBoxIcon.Stop);
+                MessageBox.Show("Problem starting " + uninTxt + ", exception =" + e.Message.ToString(),mbCaption,MessageBoxButtons.OK,MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                 Environment.Exit(1);
             }
             TCWin.mainWinTitle = mainWinTitle;
@@ -509,18 +509,20 @@ namespace TaxAide_TrueCrypt_Utility
             }
             List<string> files = new List<string>();
             if (Directory.Exists(tcProgramDirectory + "\\Tax-Aide"))
-            {
+            {//newer release exists go after these files
+                files.Add(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\Stop Tax-Aide Drive.lnk");
+                files.Add(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\Start Tax-Aide Drive.lnk");
                 files.AddRange(Directory.GetFiles(tcProgramDirectory + "\\Tax-Aide"));
             }
             else
-            {
+            {// go after files in old release
+                files.AddRange(Directory.GetFiles(desktopFolder, "*tc*"));
+                files.AddRange(Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "tc*"));
                 files.AddRange(Directory.GetFiles(tcProgramDirectory, "TC*"));
                 files.AddRange(Directory.GetFiles(tcProgramDirectory, "*.ico"));
                 files.AddRange(Directory.GetFiles(tcProgramDirectory, "Identify*"));
                 files.AddRange(Directory.GetFiles(tcProgramDirectory, "uac*"));
-                files.AddRange(Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "tc*"));
                 if (File.Exists(tcProgramDirectory + "\\EditV32.exe")) { files.Add(tcProgramDirectory + "\\EditV32.exe"); }
-                files.AddRange(Directory.GetFiles(desktopFolder, "*tc*"));
                 if (File.Exists(tcProgramDirectory + "\\ExtTC.exe")) { files.Add(tcProgramDirectory + "\\ExtTC.exe"); }
             }
             foreach (var item in files)
@@ -562,7 +564,7 @@ namespace TaxAide_TrueCrypt_Utility
             }
             catch (System.NullReferenceException )
             {
-                Log.WritWTime("null ref in remove files=" + path);
+                Log.WritWTime("null ref in remove Traveler files=" + path);
                 return;               
             } 
             foreach (var item in files)
@@ -578,7 +580,7 @@ namespace TaxAide_TrueCrypt_Utility
             File.Delete(path + "StartExternal.bat");
             File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\TC stop");
             if (tasklist.IsOn(TasksBitField.Flag.travTASwOldIsver6_2))
-            {
+            {//6.2 or greater
                 DeleteFilesInDir(path);
                 File.Delete(path.Substring(0, 3) + "autorun.inf");
                 File.Delete(path.Substring(0, 3) + "Start Traveler.bat");
@@ -587,8 +589,8 @@ namespace TaxAide_TrueCrypt_Utility
         }
         private void CopyTAFilesFromThisAssembly(string destDir)
         {
-            CopyFileFromThisAssembly("decryption.ico", destDir);
-            CopyFileFromThisAssembly("encryption.ico", destDir);
+            //CopyFileFromThisAssembly("decryption.ico", destDir);
+            //CopyFileFromThisAssembly("encryption.ico", destDir);
             progOverall.Invoke(progUpdateLin2, new object[] { "Start Tax-Aide Drive Script Copying" });
             CopyFileFromThisAssembly("Start_Tax-Aide_Drive.exe", destDir);
             progOverall.Invoke(progUpdateLin2, new object[] { "Tax-Aide Scripts Copying" });
@@ -607,13 +609,13 @@ namespace TaxAide_TrueCrypt_Utility
                 ShellLink desktopShortcut = new ShellLink();
                 desktopShortcut.ShortCutFile = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\Start Tax-Aide Drive.lnk";
                 desktopShortcut.Target = destDir + "\\" + "Start_Tax-Aide_Drive.exe";
-                desktopShortcut.IconPath = destDir + "\\" + "encryption.ico";
+                desktopShortcut.IconPath = destDir + "\\" + "Start_Tax-Aide_Drive.exe";
                 desktopShortcut.Save();
                 desktopShortcut.Dispose();
                 ShellLink desktopShortcut1 = new ShellLink();
                 desktopShortcut1.ShortCutFile = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\Stop Tax-Aide Drive.lnk";
                 desktopShortcut1.Target = destDir + "\\" + "Stop_Tax-Aide_Drive.exe";
-                desktopShortcut1.IconPath = destDir + "\\" + "decryption.ico";
+                desktopShortcut1.IconPath = destDir + "\\" + "Stop_Tax-Aide_Drive.exe";
                 desktopShortcut1.Save();
                 desktopShortcut1.Dispose();
             }
@@ -658,7 +660,7 @@ namespace TaxAide_TrueCrypt_Utility
             proc2.WaitForExit();
             if (proc2.ExitCode != 0)
             {
-                MessageBox.Show("TrueCrypt volume opening failed in some way. Reboot may be needed, when you start the P drive the copying will be attempted again.\n\tExiting", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("TrueCrypt volume opening failed in some way. Reboot may be needed, when you start the P drive the copying will be attempted again.\n\tExiting", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                 Environment.Exit(1);
             }
         }
@@ -668,7 +670,7 @@ namespace TaxAide_TrueCrypt_Utility
             proc2.WaitForExit();
             if (proc2.ExitCode != 0)
             {
-                MessageBox.Show("TrueCrypt volume Closing failed in some way\n\tExiting", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("TrueCrypt volume Closing failed in some way\n\tExiting", mbCaption, MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                 Environment.Exit(1);
             }
         }

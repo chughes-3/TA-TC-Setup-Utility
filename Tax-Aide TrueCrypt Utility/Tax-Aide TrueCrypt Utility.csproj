@@ -58,9 +58,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Management" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -146,8 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Embedded\autorun.inf" />
-    <EmbeddedResource Include="Embedded\decryption.ico" />
-    <EmbeddedResource Include="Embedded\encryption.ico" />
     <EmbeddedResource Include="hdTCSize.resx">
       <DependentUpon>hdTCSize.cs</DependentUpon>
       <SubType>Designer</SubType>

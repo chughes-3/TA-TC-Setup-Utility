@@ -81,7 +81,7 @@ namespace StartTA_TCFile
                 ShellLink desktopShortcut = new ShellLink();
                 desktopShortcut.ShortCutFile = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\Stop Traveler.lnk";
                 desktopShortcut.Target = thisProg.scriptExePath + stopTravDrv;
-                desktopShortcut.IconPath = thisProg.scriptExePath + "\\" + "decryption.ico";
+                desktopShortcut.IconPath = thisProg.scriptExePath + "\\" + "Stop_Tax-Aide_Drive.exe";
                 desktopShortcut.Save();
                 desktopShortcut.Dispose();
             } 
